@@ -11,6 +11,7 @@ class BooksModel(Base):
     book_country: Mapped[str] = mapped_column(String(50), nullable=True)
     book_release_date: Mapped[date] = mapped_column(DATE, nullable=True)
     book_translation_status: Mapped[str] = mapped_column(String(50), nullable=True)
+    book_description: Mapped[str] = mapped_column(String(1500), nullable=True)
 
 
 class TagsModel(Base):
@@ -44,4 +45,3 @@ class ChapterModel(Base):
     chapter_number: Mapped[int] = mapped_column(Integer, nullable=False)
     chapter_name: Mapped[str] = mapped_column(String(50), nullable=False)
     chapter_content: Mapped[str] = mapped_column(TEXT, nullable=False)
-

@@ -8,6 +8,7 @@ class BookBase(BaseModel):
     book_country: str | None = Field(default=None, max_length=50)
     book_release_date: date | None = None
     book_translation_status: str | None = Field(default=None, max_length=50)
+    book_description: str | None = Field(default=None, max_length=1500)
     
 
 class BookCreate(BookBase):
