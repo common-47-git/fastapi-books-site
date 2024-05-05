@@ -3,22 +3,22 @@ from sqlalchemy.orm import Mapped, mapped_column
 from datetime import date
 from src.database import Base
 
-class BooksModel(Base):
+class BookModel(Base):
     __tablename__ = "books"
     
     book_id: Mapped[int] = mapped_column(Integer, primary_key=True, nullable=False)
-    book_name: Mapped[str] = mapped_column(String(50), nullable=False)
+    book_name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     book_country: Mapped[str] = mapped_column(String(50), nullable=True)
     book_release_date: Mapped[date] = mapped_column(DATE, nullable=True)
     book_translation_status: Mapped[str] = mapped_column(String(50), nullable=True)
     book_description: Mapped[str] = mapped_column(String(1500), nullable=True)
 
 
-class TagsModel(Base):
+class TagModel(Base):
     __tablename__ = "tags"
     
     tag_id: Mapped[int] = mapped_column(Integer, primary_key=True, nullable=False)
-    tag_name: Mapped[str] = mapped_column(String(50), nullable=False)
+    tag_name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
 
  
 class BooksTagsModel(Base):
@@ -35,7 +35,7 @@ class VolumeModel(Base):
     book_id: Mapped[int] = mapped_column(Integer, ForeignKey("books.book_id"), nullable=False)
     volume_number: Mapped[int] = mapped_column(Integer, nullable=False)
     volume_name: Mapped[str] = mapped_column(String(50), nullable=False)
-    
+   
     
 class ChapterModel(Base):
     __tablename__ = "chapters"
@@ -45,3 +45,11 @@ class ChapterModel(Base):
     chapter_number: Mapped[int] = mapped_column(Integer, nullable=False)
     chapter_name: Mapped[str] = mapped_column(String(50), nullable=False)
     chapter_content: Mapped[str] = mapped_column(TEXT, nullable=False)
+    
+    
+class AuthorModel(Base):
+    __tablename__ = "authors"
+    
+    author_id: Mapped[int] = mapped_column(Integer, primary_key=True, nullable=False)
+    author_name: Mapped[str] = mapped_column(String(50), nullable=True)
+    author_surname: Mapped[str] = mapped_column(String(50), nullable=True)

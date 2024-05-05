@@ -1,11 +1,11 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from src.models import BooksModel, VolumeModel, ChapterModel, TagsModel
+from src.models import BookModel, VolumeModel, ChapterModel, TagModel, AuthorModel
 
 ######### Books CRUD #########
 
 async def get_books(session: Session):
-    stmt = select(BooksModel)
+    stmt = select(BookModel)
     result = session.execute(stmt)
     books = result.scalars().all()
     
@@ -16,14 +16,10 @@ async def get_books(session: Session):
     return books
 
 
-async def get_book(book_name: str, session: Session):
-    stmt = select(BooksModel).where(BooksModel.book_name == book_name)
+async def get_book_by_name(book_name: str, session: Session):
+    stmt = select(BookModel).where(BookModel.book_name == book_name)
     result = session.execute(stmt)
     book = result.scalars().first()
-    
-    if book.book_description is None:
-            book.book_description = "No description"
-
     return book
 
 
@@ -37,10 +33,10 @@ async def get_book_chapter(
     query = (
     select(ChapterModel.chapter_content)
     .join(VolumeModel, VolumeModel.volume_id == ChapterModel.volume_id)
-    .join(BooksModel, BooksModel.book_id == VolumeModel.book_id)
+    .join(BookModel, BookModel.book_id == VolumeModel.book_id)
     .filter(ChapterModel.chapter_number == chapter_number)
     .filter(VolumeModel.volume_number == volume_number)
-    .filter(BooksModel.book_name == book_name)
+    .filter(BookModel.book_name == book_name)
     )
     result = session.execute(query)
     chapter_content = result.scalars().first()
@@ -49,7 +45,25 @@ async def get_book_chapter(
 ######### Tags CRUD #########
 
 async def get_tags(session: Session):
-    stmt = select(TagsModel)
+    stmt = select(TagModel)
+    result = session.execute(stmt)
+    books = result.scalars().all()
+    return books
+
+######### Authors CRUD #########
+
+async def get_authors(session: Session):
+    stmt = select(AuthorModel)
+    result = session.execute(stmt)
+    authors = result.scalars().all()
+      
+    return authors
+
+async def get_books_by_author(author_name: str, session: Session):
+    stmt = (
+        select(BookModel)
+        #.join()
+        .where(AuthorModel.author_name == author_name))
     result = session.execute(stmt)
     books = result.scalars().all()
     return books

@@ -15,13 +15,16 @@ class BookCreate(BookBase):
     pass
 
 
-class BookGet(BookBase):
+class BookRead(BookBase):
+    pass
+
+
+class BookUpate(BookBase):
     pass
 
 
 class BookInDB(BookBase):
     book_id: int
-
 
 ########### Tags Schemas ###########
 
@@ -33,7 +36,11 @@ class TagCreate(TagBase):
     pass
 
 
-class TagGet(TagBase):
+class TagRead(TagBase):
+    pass
+
+
+class TagUpdate(TagBase):
     pass
 
 
@@ -53,7 +60,11 @@ class VolumeCreate(VolumeBase):
     pass
 
 
-class VolumeGet(VolumeBase):
+class VolumeUpdate(VolumeBase):
+    pass
+
+
+class VolumeRead(VolumeBase):
     pass
 
 
@@ -72,10 +83,32 @@ class ChapterCreate(VolumeBase):
     pass
 
 
-class ChapterGet(VolumeBase):
+class ChapterRead(VolumeBase):
+    pass
+
+
+class ChapterUpdate(VolumeBase):
     pass
 
 
 class ChapterInDB(VolumeBase):
     chapter_id: int
     volume_id: int
+    
+########### Authors Schemas ###########
+
+class AuthorBase(BaseModel):
+    author_name: str = Field(max_length=50)
+    author_surname: str = Field(max_length=50)
+
+
+class AuthorCreate(AuthorBase):
+    pass
+
+
+class AuthorRead(AuthorBase):
+    pass
+
+
+class AuthorInDB(AuthorBase):
+    author_id: int
