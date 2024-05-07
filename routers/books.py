@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Body
-from src import crud, database, schemas
+from src import database
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException
 from typing import Annotated
+
+from src.library import crud, schemas
 
 books_router = APIRouter(prefix="/books", tags=["books"])
 

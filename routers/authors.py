@@ -1,7 +1,9 @@
 from fastapi import APIRouter
-from src import crud, database, schemas
+from src import database
 from sqlalchemy.orm import Session
 from fastapi import Depends
+
+from src.library import crud, schemas
 
 authors_router = APIRouter(prefix="/authors", tags=["authors"])
 

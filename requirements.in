@@ -1,3 +1,7 @@
 sqlalchemy
 fastapi
 pyodbc
+pyjwt[crypto]
+python-jose
+bcrypt
+passlib

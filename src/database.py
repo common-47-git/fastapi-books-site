@@ -1,7 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-engine = create_engine('mssql+pyodbc://books-site-login:121212@AYANOKOUJI-PC\SQLSERVER/books-site?driver=SQL+Server', echo=True)
+engine = create_engine(
+    "mssql+pyodbc://books-site-login:121212@AYANOKOUJI-PC\SQLSERVER/books-site?driver=SQL+Server",
+    echo=True)
 
 session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
