@@ -1,60 +1,75 @@
-from fastapi import FastAPI, Depends, HTTPException, status
-from sqlalchemy import select
-from sqlalchemy.orm import Session
+from datetime import datetime, timedelta, timezone
+from typing import Annotated, Any
+
+from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
-from datetime import datetime, timedelta, timezone
 from passlib.context import CryptContext
-from src.users.models import UserModel
-from src.database import get_db
 from pydantic import BaseModel
-from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import select
+from src.users import models, schemas
+from src.database import get_db
+from sqlalchemy.orm import Session
 
-from src.users.schemas import UserCreate
-
-app = FastAPI()
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-# Your JWT secret and algorithm
-SECRET_KEY = "your_secret_key"
+# to get a string like this run:
+# openssl rand -hex 32
+SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
-def get_user_by_username(session: Session, username: str):
-    stmt = select(UserModel).filter(UserModel.username == username)
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: str | None = None
+
+
+class User(BaseModel):
+    username: str
+    email: str
+    disabled: bool | None = None
+
+
+class UserInDB(User):
+    password: str
+    user_id: int
+
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+app = FastAPI()
+
+db_dependency = Annotated[Session, Depends(get_db)]
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+
+def get_user(session: db_dependency, username: str):
+    stmt = select(models.UserModel).filter(models.UserModel.username == username)
     result = session.execute(stmt)
     user = result.scalars().first()
-    return user
+    return UserInDB.model_validate(user, from_attributes=True)
 
-def create_user(db: Session, user: UserCreate):
-    password = pwd_context.hash(user.password)
-    db_user = UserModel(username=user.username, password=password, email=user.email)
-    db.add(db_user)
-    db.commit()
-    return "complete"
 
-@app.post("/register")
-def register_user(user: UserCreate, db: Session = Depends(get_db)):
-    db_user = get_user_by_username(db, username=user.username)
-    if db_user:
-        raise HTTPException(status_code=400, detail="Username already registered")
-    return create_user(db=db, user=user)
-
-# Authenticate the user
-def authenticate_user(username: str, password: str, db: Session):
-    user = db.query(UserModel).filter(UserModel.username == username).first()
+def authenticate_user(session: db_dependency, username: str, password: str):
+    user = get_user(session=session, username=username)
     if not user:
         return False
-    if not pwd_context.verify(password, user.password):
+    if not verify_password(password, user.password):
         return False
     return user
 
-# Create access token
+
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
     if expires_delta:
@@ -65,9 +80,41 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
+
+async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], session: db_dependency):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+        token_data = TokenData(username=username)
+    except JWTError:
+        raise credentials_exception
+    user = get_user(session=session, username=token_data.username)
+    if user is None:
+        raise credentials_exception
+    return user
+
+
+async def get_current_active_user(
+    current_user: Annotated[User, Depends(get_current_user)],
+):
+    if current_user.disabled:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return current_user
+
+
 @app.post("/token")
-def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = authenticate_user(form_data.username, form_data.password, db)
+async def login_for_access_token(
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    session: db_dependency
+) -> Token:
+    user = authenticate_user(session=session, username=form_data.username, password=form_data.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -78,20 +125,18 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    return Token(access_token=access_token, token_type="bearer")
 
 
-def verify_token(token: str = Depends(oauth2_scheme)):
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise HTTPException(status_code=403, detail="Token is invalid or expired")
-        return payload
-    except JWTError:
-        raise HTTPException(status_code=403, detail="Token is invalid or expired")
+@app.get("/users/me/")
+async def read_users_me(
+    current_user: Annotated[User , Depends(get_current_active_user)],
+):
+    return current_user
 
-@app.get("/verify-token/{token}")
-async def verify_user_token(token: str):
-    verify_token(token=token)
-    return {"message": "Token is valid"}
+
+@app.get("/users/me/items/")
+async def read_own_items(
+    current_user: Annotated[User, Depends(get_current_active_user)],
+):
+    return [{"item_id": "Foo", "owner": current_user.username}]

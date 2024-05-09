@@ -5,3 +5,4 @@ pyjwt[crypto]
 python-jose
 bcrypt
 passlib
+redis

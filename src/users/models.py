@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String, ForeignKey
+from sqlalchemy import Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 from src.database import Base
 
@@ -10,6 +10,7 @@ class UserModel(Base):
     username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     email: Mapped[str] = mapped_column(String(50), nullable=False)
     password: Mapped[str] = mapped_column(String(50), nullable=False)
+    disabled: Mapped[bool] = mapped_column(Boolean, nullable=True)
 
 
 class UsersBooksModel(Base):
