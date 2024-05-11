@@ -1,31 +1,18 @@
-from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
-
-from datetime import datetime, timedelta, timezone
 from typing import Annotated
+from dotenv import load_dotenv
+from os import getenv
 
+from fastapi import Depends, HTTPException
 from sqlalchemy import select
+from jose import JWTError, jwt # type: ignore
 
 from src import database
 from src.users.schemas import UserInDB, TokenData, UserRead
 from src.users.models import UserModel, UsersBooksModel
 from src.library.models import BookModel
+from src.users.auth import oauth2_scheme, verify_password
 
-
-from jose import JWTError, jwt # type: ignore
-from passlib.context import CryptContext # type: ignore
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/token")
-
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
-
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
+load_dotenv(".env\.env")
 
 def get_user(
     session: database.db_dependency, 
@@ -49,20 +36,6 @@ def authenticate_user(
     return user
 
 
-def create_access_token(
-    data: dict, 
-    expires_delta: timedelta | None = None
-):
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.now(timezone.utc) + expires_delta
-    else:
-        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, database.SECRET_KEY, algorithm=database.ALGORITHM)
-    return encoded_jwt
-
-
 async def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)], 
     session: database.db_dependency
@@ -73,7 +46,7 @@ async def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, database.SECRET_KEY, algorithms=[database.ALGORITHM])
+        payload = jwt.decode(token, getenv("SECRET_KEY"), algorithms=[getenv("ALGORITHM")])
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception
@@ -98,28 +71,11 @@ async def get_user_books(
     session: database.db_dependency, 
     username: str
 ):
-    current_user_id = (
-        session.execute(
-            select(UserModel.user_id)
-            .where(UserModel.username == username)
-        )
-        .scalars().first()
+    query = (
+        select(BookModel)
+        .join(UsersBooksModel)
+        .join(UserModel)
+        .filter(UserModel.username == username)
     )
-    
-    books_ids = (
-        session.execute(
-            select(UsersBooksModel.book_id)
-            .where(UsersBooksModel.user_id == current_user_id)
-        )
-        .scalars().all()
-    )
-    
-    books = (
-        session.execute(
-            select(BookModel)
-            .where(BookModel.book_id.in_(books_ids))
-        )
-        .scalars().all()
-    )
-    
+    books = session.execute(query).scalars().all()
     return books

@@ -6,3 +6,4 @@ python-jose
 bcrypt
 passlib
 redis
+python-dotenv

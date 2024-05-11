@@ -53,3 +53,10 @@ class AuthorModel(Base):
     author_id: Mapped[int] = mapped_column(Integer, primary_key=True, nullable=False)
     author_name: Mapped[str] = mapped_column(String(50), nullable=True)
     author_surname: Mapped[str] = mapped_column(String(50), nullable=True)
+    
+    
+class BooksAuthorsModel(Base):
+    __tablename__ = "books-authors"
+    
+    book_id: Mapped[int] = mapped_column(Integer, ForeignKey("books.book_id"), primary_key=True, nullable=False)
+    author_id: Mapped[int] = mapped_column(Integer, ForeignKey("authors.author_id"), primary_key=True, nullable=False)    

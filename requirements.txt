@@ -87,7 +87,9 @@ pyjwt[crypto]==2.8.0
 pyodbc==5.1.0
     # via -r requirements.in
 python-dotenv==1.0.1
-    # via uvicorn
+    # via
+    #   -r requirements.in
+    #   uvicorn
 python-jose==3.3.0
     # via -r requirements.in
 python-multipart==0.0.9

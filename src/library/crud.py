@@ -1,6 +1,14 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from src.library.models import BookModel, VolumeModel, ChapterModel, TagModel, AuthorModel
+
+from src.library.models import (
+    BookModel,
+    BooksAuthorsModel,
+    VolumeModel,
+    ChapterModel,
+    TagModel, 
+    AuthorModel 
+)
 
 ######### Books CRUD #########
 
@@ -56,13 +64,15 @@ async def get_authors(session: Session):
     stmt = select(AuthorModel)
     result = session.execute(stmt)
     authors = result.scalars().all()
+    print(authors)
       
     return authors
 
 async def get_books_by_author(author_name: str, session: Session):
     stmt = (
         select(BookModel)
-        #.join()
+        .join(BooksAuthorsModel)
+        .join(AuthorModel)
         .where(AuthorModel.author_name == author_name))
     result = session.execute(stmt)
     books = result.scalars().all()
