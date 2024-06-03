@@ -1,24 +1,23 @@
 from fastapi import Depends
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import DeclarativeBase, sessionmaker, Session
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
+from sqlalchemy.orm import DeclarativeBase
 
 from typing import Annotated
 
-engine = create_engine(
-    "mssql+pyodbc://books-site-login:121212@AYANOKOUJI-PC\SQLSERVER/books-site?driver=SQL+Server",
+engine = create_async_engine(
+    "mssql+aioodbc://books-site-login:121212@AYANOKOUJI-PC\SQLSERVER/books-site?driver=SQL+Server",
     echo=True)
 
-session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+session_local = async_sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-def get_db():
-    db = session_local()
+async def get_session():
+    session = session_local()
     try:
-        yield db
+        yield session
     finally:
-        db.close()
+        session.close()
         
-db_dependency = Annotated[Session, Depends(get_db)]
+async_session_dependency = Annotated[AsyncSession, Depends(get_session)]
 
 class Base(DeclarativeBase):
     def __repr__(self) -> str:

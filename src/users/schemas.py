@@ -24,7 +24,7 @@ class UserCreate(UserBase):
 
 
 class UserRead(UserBase):
-    registration_date: date
+    registration_date: date | None = None
     disabled: bool | None = None
 
 

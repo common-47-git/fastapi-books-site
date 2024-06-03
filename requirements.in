@@ -1,6 +1,7 @@
-sqlalchemy
 fastapi
+sqlalchemy
 pyodbc
+aioodbc
 pyjwt[crypto]
 python-jose
 bcrypt

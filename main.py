@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from routers import books, tags, authors, users
 
-app = FastAPI()
+app = FastAPI(title="Books site")
 
 app.include_router(books.books_router)
 app.include_router(authors.authors_router)
