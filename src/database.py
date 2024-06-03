@@ -22,11 +22,12 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 class Base(DeclarativeBase):
     def __repr__(self) -> str:
-        return (
-            f'''
-            {self.__tablename__}(
-                {self.__table__.c[0].key}={getattr(self, self.__table__.c[0].key)} 
-                {self.__table__.c[1].key}={getattr(self, self.__table__.c[1].key)}
-            )
-            '''
-        )
+        columns_values = ""
+        columns_to_show = 2
+        for i, column in enumerate(self.__table__.c):
+            if i < columns_to_show:
+                columns_values += f"{column.key}={getattr(self, column.key)} "
+            else:
+                continue
+        return f"{self.__tablename__}({columns_values.strip()})"
+

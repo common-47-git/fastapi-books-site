@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Body, HTTPException, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
 from datetime import timedelta
@@ -8,8 +8,8 @@ from os import getenv
 
 from src import database
 from src.users.auth import create_access_token
-from src.users.crud import authenticate_user, get_current_active_user, get_user_books 
-from src.users.schemas import Token, UserRead
+from src.users.crud import authenticate_user, get_current_active_user, get_user_books, post_user
+from src.users.schemas import Token, UserRead, UserCreate
 from src.library.schemas import BookRead
 
 users_router = APIRouter(prefix="/users", tags=["users"])
@@ -35,6 +35,13 @@ async def login_for_access_token(
     return Token(access_token=access_token, token_type="bearer")
 
 
+@users_router.post("/new", response_model=UserRead)
+async def create_user(
+    session: database.db_dependency,
+    user: UserCreate
+) -> UserRead:
+    return await post_user(session=session, user=user)
+
 @users_router.get("/me", response_model=UserRead)
 async def read_current_user(
     current_user: Annotated[UserRead , Depends(get_current_active_user)],
@@ -48,3 +55,5 @@ async def read_user_books(
     session: database.db_dependency
 ) -> list[BookRead]:
     return await get_user_books(username=current_user.username, session=session)
+
+

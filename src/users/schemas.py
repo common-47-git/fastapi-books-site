@@ -1,4 +1,6 @@
-from pydantic import BaseModel
+from datetime import date
+
+from pydantic import BaseModel, EmailStr
 
 ########### Tokens Schemas ###########
 
@@ -14,8 +16,7 @@ class TokenData(BaseModel):
 
 class UserBase(BaseModel):
     username: str
-    email: str
-    disabled: bool | None = None
+    email: EmailStr
     
 
 class UserCreate(UserBase):
@@ -23,7 +24,8 @@ class UserCreate(UserBase):
 
 
 class UserRead(UserBase):
-    pass
+    registration_date: date
+    disabled: bool | None = None
 
 
 class UserUpdate(UserBase):
@@ -31,6 +33,8 @@ class UserUpdate(UserBase):
 
 
 class UserInDB(UserBase):
+    disabled: bool | None = None
+    registration_date: date
     password: str
     user_id: int
     

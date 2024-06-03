@@ -7,10 +7,10 @@ from sqlalchemy import select
 from jose import JWTError, jwt # type: ignore
 
 from src import database
-from src.users.schemas import UserInDB, TokenData, UserRead
+from src.users.schemas import UserCreate, UserInDB, TokenData, UserRead
 from src.users.models import UserModel, UsersBooksModel
 from src.library.models import BookModel
-from src.users.auth import oauth2_scheme, verify_password
+from src.users.auth import get_password_hash, oauth2_scheme, verify_password
 
 load_dotenv(".env\.env")
 
@@ -22,6 +22,17 @@ def get_user(
     result = session.execute(stmt)
     user = result.scalars().first()
     return UserInDB.model_validate(user, from_attributes=True)
+
+
+async def post_user(
+    session: database.db_dependency,
+    user: UserCreate
+) -> UserRead:
+    user.password = get_password_hash(user.password)
+    new_user = UserModel(**user.model_dump(exclude_none=True))
+    session.add(new_user)
+    session.commit()
+    return new_user
 
 
 def authenticate_user(
