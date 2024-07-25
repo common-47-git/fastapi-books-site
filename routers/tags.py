@@ -12,11 +12,11 @@ async def read_tags(
     try:
         tags = await crud.get_tags(session=session)
     except Exception:
-        raise HTTPException(status_code=500, detail="Unexpected error occured.")
+        raise HTTPException(status_code=500)
+    
     if not tags:
-        raise HTTPException(status_code=404, detail="Not a single tag was found.")
-    else:
-        return tags
+        raise HTTPException(status_code=404)
+    return tags
 
 
 

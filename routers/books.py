@@ -14,11 +14,11 @@ async def read_books(
     try:
         books = await crud.get_books(session=session)
     except Exception:
-        raise HTTPException(status_code=500, detail="Unexpected error occured.")
+        raise HTTPException(status_code=500)
+    
     if not books:
-            raise HTTPException(status_code=404, detail="Not a single book was found.")
-    else:
-        return books
+            raise HTTPException(status_code=404)
+    return books
 
 
 @books_router.get("/{book_name}", response_model=schemas.BookRead)
@@ -29,11 +29,11 @@ async def read_book(
     try:
         book = await crud.get_book_by_name(book_name=book_name, session=session)
     except Exception:
-        raise HTTPException(status_code=500, detail="Unexpected error occured.")
+        raise HTTPException(status_code=500)
+    
     if not book:
-        raise HTTPException(status_code=404, detail="Book not found.")
-    else:
-        return book
+        raise HTTPException(status_code=404)
+    return book
 
 
 @books_router.get("/{book_name}/{volume}/{chapter}")
@@ -51,9 +51,9 @@ async def read_book_chapter(
             session=session
         )
     except Exception:
-        raise HTTPException(status_code=500, detail="Unexpected error occured.")
+        raise HTTPException(status_code=500)
+    
     if not chapter:
-        raise HTTPException(status_code=404, detail="Chapter not found")
-    else:
-        return chapter
+        raise HTTPException(status_code=404)
+    return chapter
     

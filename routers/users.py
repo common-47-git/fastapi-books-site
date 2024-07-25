@@ -16,7 +16,7 @@ users_router = APIRouter(prefix="/users", tags=["users"])
 
 load_dotenv(".env\.env")
 
-@users_router.post("/token")
+@users_router.post("/login")
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session: async_session_dependency
