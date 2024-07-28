@@ -1,5 +1,4 @@
 __pycache__/
-.env
 **/__pycache__/
 
 # Byte-compiled / optimized / DLL files
@@ -128,7 +127,6 @@ celerybeat.pid
 # Environments
 .env
 .venv
-env/
 venv/
 ENV/
 env.bak/
