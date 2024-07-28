@@ -4,9 +4,12 @@ from sqlalchemy.orm import DeclarativeBase
 
 from typing import Annotated
 
+from env.config import DBNAME, DRIVER, PASSWORD, SERVERNAME, LOGIN_USER
+
 engine = create_async_engine(
-    "mssql+aioodbc://books-site-login:121212@AYANOKOUJI-PC\SQLSERVER/books-site?driver=SQL+Server",
-    echo=True)
+    f"mssql+aioodbc://{LOGIN_USER}:{PASSWORD}@{SERVERNAME}/{DBNAME}?driver={DRIVER}",
+    echo=True
+)
 
 session_local = async_sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

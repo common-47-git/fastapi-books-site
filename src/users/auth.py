@@ -1,16 +1,15 @@
 from datetime import datetime, timedelta, timezone
-from dotenv import load_dotenv
-from os import getenv
+
 
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext # type: ignore
 from jose import jwt # type: ignore
 
+from env.config import SECRET_KEY, ALGORITHM
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/login")
-
-load_dotenv(".env\.env")
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
@@ -30,5 +29,5 @@ def create_access_token(
     else:
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, getenv("SECRET_KEY"), algorithm=getenv("ALGORITHM"))
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt

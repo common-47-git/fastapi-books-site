@@ -1,20 +1,18 @@
-from fastapi import APIRouter, Body, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
 from datetime import timedelta
 from typing import Annotated
-from dotenv import load_dotenv
-from os import getenv
+
 
 from src.users.auth import create_access_token
 from src.users.crud import authenticate_user, get_current_active_user, get_user_books, post_user
 from src.users.schemas import Token, UserRead, UserCreate
 from src.library.schemas import BookRead
 from src.database import async_session_dependency
+from env.config import ACCESS_TOKEN_EXPIRE_MINUTES
 
 users_router = APIRouter(prefix="/users", tags=["users"])
-
-load_dotenv(".env\.env")
 
 @users_router.post("/login")
 async def login_for_access_token(
@@ -23,7 +21,7 @@ async def login_for_access_token(
 ) -> Token:
     try:
         user = await authenticate_user(session=session, username=form_data.username, password=form_data.password)
-        access_token_expires = timedelta(minutes=int(getenv("ACCESS_TOKEN_EXPIRE_MINUTES")))
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = create_access_token(
             data={"sub": user.username}, expires_delta=access_token_expires
         )
@@ -32,7 +30,7 @@ async def login_for_access_token(
     if not user:
         raise HTTPException(
             status_code=HTTPException(status_code=401),
-            detail="Incorrect username or password",
+            detail="Incorrect username",
             headers={"WWW-Authenticate": "Bearer"},
         )
     else:
