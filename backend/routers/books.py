@@ -1,8 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
 from typing import Annotated
 
-from src.library import crud, schemas
+from src.library import schemas
+from src.library import crud
 from src.database import async_session_dependency
 
 books_router = APIRouter(prefix="/books", tags=["books"])
@@ -22,7 +23,7 @@ async def read_books(
 
 
 @books_router.get("/{book_name}", response_model=schemas.BookRead)
-async def read_book(
+async def read_book_by_name(
     book_name: str,
     session: async_session_dependency
 ) -> schemas.BookRead:
@@ -36,12 +37,27 @@ async def read_book(
     return book
 
 
-@books_router.get("/{book_name}/{volume}/{chapter}")
-async def read_book_chapter(
-    book_name: str, 
-    volume: int, 
-    chapter: int, 
+@books_router.get("/author-of/{book_name}", response_model=schemas.AuthorRead)
+async def read_book_author_by_name(
+    book_name: str,
     session: async_session_dependency
+) -> schemas.BookRead:
+    try:
+        book = await crud.get_book_author_by_name(book_name=book_name, session=session)
+    except Exception:
+        raise HTTPException(status_code=500)
+    
+    if not book:
+        raise HTTPException(status_code=404)
+    return book
+
+
+@books_router.get("/{book_name}/read")
+async def read_book_chapter(
+    session: async_session_dependency,
+    book_name: str, 
+    volume: int = 1,
+    chapter: int = 1,
 ):
     try:
         chapter = await crud.get_book_chapter(

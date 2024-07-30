@@ -1,7 +1,9 @@
 import './App.css';
 import axios from "axios";
 import { useEffect, useState } from "react";
-import BookInfo from './components/BookInfo';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import RawBook from './components/RawBook';
+import BookDetail from './components/BookDetail'; // Import the BookDetail component
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -21,16 +23,22 @@ function App() {
   }, []);
 
   return (
-    <div className="books-grid">
-      {books.length > 0 ? 
-        books.map((book, index) => (
-          <BookInfo key={index} book={book} />
-        )) 
-        : "Loading..."
-      }
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={
+          <div className="books-grid">
+            {books.length > 0 ? 
+              books.map((book, index) => (
+                <RawBook key={index} book={book} />
+              )) 
+              : "Loading..."
+            }
+          </div>
+        } />
+        <Route path="/books/:bookName" element={<BookDetail />} />
+      </Routes>
+    </Router>
   );
 }
 
 export default App;
-

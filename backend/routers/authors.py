@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
-from src.library import crud, schemas
+from src.library import schemas
+from src.library import crud
 from src.database import async_session_dependency
 
 authors_router = APIRouter(prefix="/authors", tags=["authors"])

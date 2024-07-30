@@ -1,16 +1,18 @@
-import "./BookInfo.css"; // Import the CSS file
+import { Link } from "react-router-dom";
+import '../App.css';
 
-function BookInfo({ book }) {
+function RawBook({ book }) {
   return (
     <div>
-      <div className="book-container">
+      <Link to={`/books/${book.book_name}`} className="book-container">
         <div className="book-title">{book.book_name}</div>
         <div className="book-detail"><strong>Country:</strong> {book.book_country}</div>
         <div className="book-detail"><strong>Release Date:</strong> {new Date(book.book_release_date).toLocaleDateString()}</div>
         <div className="book-description"><strong>Description:</strong> {book.book_description || "No description available"}</div>
-      </div>
+      </Link>
     </div>
   );
 }
 
-export default BookInfo;
+export default RawBook;
+

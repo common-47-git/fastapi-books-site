@@ -12,10 +12,10 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #45464daa);
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em #495355aa);
 }
 
 @keyframes logo-spin {
@@ -47,4 +47,29 @@
   gap: 16px; /* Space between grid items */
   padding: 16px; /* Padding around the grid */
 }
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.book-container {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.book-container:hover {
+  background-color: #3b3b3b;
+}
+
+.book-detail-container {
+  padding: 20px;
+}
+
   

@@ -1,8 +1,10 @@
 from sqlalchemy import select
 
+from src.library import schemas
 from src.library.models import (
     BookModel,
     BooksAuthorsModel,
+    BooksTagsModel,
     VolumeModel,
     ChapterModel,
     TagModel, 
@@ -33,12 +35,27 @@ async def get_book_by_name(
     return book
 
 
+async def get_book_author_by_name(
+    book_name: str,
+    session: async_session_dependency
+):
+    stmt = (
+        select(AuthorModel)
+        .join(BooksAuthorsModel)
+        .join(BookModel)
+        .where(BookModel.book_name == book_name))
+    result = await session.execute(stmt)
+    author = result.scalars().first()
+    
+    return author
+
+
 async def get_book_chapter(
     book_name: str, 
     volume_number: int, 
     chapter_number: int, 
     session: async_session_dependency
-):
+) -> str:
     query = (
     select(ChapterModel.chapter_content)
     .join(VolumeModel, VolumeModel.volume_id == ChapterModel.volume_id)
@@ -60,8 +77,9 @@ async def get_tags(
 ):
     stmt = select(TagModel)
     result = await session.execute(stmt)
-    books = result.scalars().all()
-    return books
+    tags = result.scalars().all()
+    return tags
+
 
 ######### Authors CRUD #########
 
