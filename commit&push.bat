@@ -2,7 +2,7 @@
 
 set /p if_commit="Press ENTER if you want to commit the changes: "
 
-if /i ""=="" (
+if ""=="" (
     git add .
     git commit -m "commit"
     git push -u origin main
