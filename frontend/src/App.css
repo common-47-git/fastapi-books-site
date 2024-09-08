@@ -8,27 +8,6 @@ html, body {
   flex-direction: column;
 }
 
-.header {
-  border-bottom: 1px solid #fff;
-}
-
-.header-nav {
-  padding: 10px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.header-nav-el {
-  color: #ccc;
-  padding: 5px;
-}
-
-.header-nav-el:hover {
-  color: #dddddd;
-}
-
 .main {
   flex-grow: 1;
   display: flex;

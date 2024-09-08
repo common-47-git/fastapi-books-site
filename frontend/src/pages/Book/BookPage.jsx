@@ -1,14 +1,17 @@
-import '../App.css';
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useSearchParams, Link } from "react-router-dom";
 
-import Header from '../components/Header';
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
 
 function BookDetail() {
   const { bookName } = useParams();
   const [book, setBook] = useState(null);
   const [author, setAuthor] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams()
+  const volume = searchParams.get('volume') || 1;
+  const chapter = searchParams.get('chapter') || 1;
 
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/books/${bookName}`)
@@ -44,11 +47,16 @@ function BookDetail() {
             <div><strong>Release Date:</strong> {new Date(book.book_release_date).toLocaleDateString()}</div>
             <div><strong>Description:</strong> {book.book_description || "No description available"}</div>
           </div>
-          <Link to={`/books/${bookName}/read`} className="read-chapter-link" >
+          <Link to={{
+              pathname: `/books/${bookName}/read`,
+              search: `?volume=${volume}&chapter=${chapter}`,
+            }} className="read-chapter-link" >
             Read
           </Link>
+          
         </div>
       </main>
+      <Footer></Footer>
     </>
   );
 }

@@ -1,0 +1,16 @@
+.header {
+  border-bottom: 1px solid #fff;
+}
+.header .header-nav {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header .header-nav-el {
+  color: #ccc;
+  padding: 5px;
+}
+.header :hover {
+  color: #ff0000;
+}/*# sourceMappingURL=styles.css.map */

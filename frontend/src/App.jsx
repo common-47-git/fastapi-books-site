@@ -1,10 +1,10 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Index from './pages/Index';
-import Books from './pages/Books';
-import BookDetail from './pages/BookDetail'; 
-import ChapterDetail from './pages/Chapter'; 
+import HomePage from './pages/Home/HomePage';
+import BooksPage from './pages/Books/BooksPage';
+import BookPage from './pages/Book/BookPage'; 
+import BookReadPage from './pages/BookRead/BookReadPage'; 
 
 function App() {
   
@@ -12,10 +12,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/books" element={<Books />} />
-        <Route path="/books/:bookName" element={<BookDetail />} />
-        <Route path="/books/:bookName/read" element={<ChapterDetail />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/books" element={<BooksPage />} />
+        <Route path="/books/:bookName" element={<BookPage />} />
+        <Route path="/books/:bookName/read" element={<BookReadPage />} />
       </Routes>
     </Router>
   );
