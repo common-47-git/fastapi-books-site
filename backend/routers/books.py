@@ -1,6 +1,4 @@
-from fastapi import APIRouter, HTTPException, Query
-
-from typing import Annotated
+from fastapi import APIRouter, HTTPException
 
 from src.library import schemas
 from src.library import crud
@@ -37,8 +35,8 @@ async def read_book_by_name(
     return book
 
 
-@books_router.get("/author-of/{book_name}", response_model=schemas.AuthorRead)
-async def read_book_author_by_name(
+@books_router.get("/{book_name}/author", response_model=schemas.AuthorRead)
+async def read_author_by_book_name(
     book_name: str,
     session: async_session_dependency
 ) -> schemas.BookRead:

@@ -19,7 +19,7 @@ function BookDetail() {
         console.error("Error fetching book:", error);
       });
 
-    axios.get(`http://127.0.0.1:8000/books/author-of/${bookName}`)
+    axios.get(`http://127.0.0.1:8000/books/${bookName}/author`)
       .then(response => {
         setAuthor(response.data);
       })
@@ -48,8 +48,7 @@ function BookDetail() {
             Read
           </Link>
         </div>
-
-    </main>
+      </main>
     </>
   );
 }
