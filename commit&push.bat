@@ -1,8 +1,8 @@
 @echo off
 
-set /p if_commit="Do you want to commit the changes? (yes/no): "
+set /p if_commit="Press ENTER if you want to commit the changes: "
 
-if /i "%if_commit%"=="yes" (
+if /i ""=="" (
     git add .
     git commit -m "commit"
     git push -u origin main
