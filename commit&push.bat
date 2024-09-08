@@ -10,4 +10,4 @@ if /i "%if_commit%"=="yes" (
     echo No commit made.
 )
 
-set /p commit_msg="Exit..."
+set /p commit_msg="/nExit..."
