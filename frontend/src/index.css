@@ -1,0 +1,17 @@
+html, body {
+    height: 100%;
+  
+    padding: 0;
+    margin: 0;
+
+    font-size: 14px;
+    font-family: Open Sans, Arial, sans-serif !important;
+    
+    background-color: #1c1c1c !important;
+    color: rgb(162, 162, 163);
+}
+
+a {
+    color: rgb(162, 162, 163);
+    text-decoration: none;
+}

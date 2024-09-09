@@ -39,21 +39,22 @@ function BookDetail() {
     <>
       <Header></Header>
       <main className="main">
-        <div className="main-book-detail">
-          <div className="book-detail-container">
-            <h1>{book.book_name}</h1>
-            <div><strong>Author:</strong> {author.author_name} {author.author_surname}</div>
-            <div><strong>Country:</strong> {book.book_country}</div>
-            <div><strong>Release Date:</strong> {new Date(book.book_release_date).toLocaleDateString()}</div>
-            <div><strong>Description:</strong> {book.book_description || "No description available"}</div>
+        <div className="container">
+          <div className="main-book-detail">
+            <div className="book-detail-container">
+              <h1>{book.book_name}</h1>
+              <div><strong>Author:</strong> {author.author_name} {author.author_surname}</div>
+              <div><strong>Country:</strong> {book.book_country}</div>
+              <div><strong>Release Date:</strong> {new Date(book.book_release_date).toLocaleDateString()}</div>
+              <div><strong>Description:</strong> {book.book_description || "No description available"}</div>
+            </div>
+            <Link to={{
+                pathname: `/books/${bookName}/read`,
+                search: `?volume=${volume}&chapter=${chapter}`,
+              }} className="read-chapter-link" >
+              Read
+            </Link>
           </div>
-          <Link to={{
-              pathname: `/books/${bookName}/read`,
-              search: `?volume=${volume}&chapter=${chapter}`,
-            }} className="read-chapter-link" >
-            Read
-          </Link>
-          
         </div>
       </main>
       <Footer></Footer>

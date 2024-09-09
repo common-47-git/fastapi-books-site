@@ -8,7 +8,6 @@ import BookReadPage from './pages/BookRead/BookReadPage';
 
 function App() {
   
-
   return (
     <Router>
       <Routes>
@@ -19,6 +18,7 @@ function App() {
       </Routes>
     </Router>
   );
+  
 }
 
 export default App;

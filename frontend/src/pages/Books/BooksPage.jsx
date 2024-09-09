@@ -26,16 +26,20 @@ function Books() {
   return (
     <> 
       <Header />
-      <div className="books-grid">
-        {books.length > 0 ? 
-          books.map((book, index) => (
-            <Link to={`/books/${book.book_name}`} key={index} className="book-container">
-              <div className="book-title">{book.book_name}</div>
-            </Link>
-          )) 
-          : "Loading..."
-        }
-      </div>
+      <main className="main">
+        <div className="container">
+          <div className="books-grid">
+            {books.length > 0 ? 
+              books.map((book, index) => (
+                <Link to={`/books/${book.book_name}`} key={index} className="book-container">
+                  <div className="book-title">{book.book_name}</div>
+                </Link>
+              )) 
+              : "Loading..."
+            }
+          </div>
+        </div>
+      </main>
       <Footer></Footer>
     </>
   );

@@ -3,6 +3,7 @@ import { useLocation, useParams, Link } from "react-router-dom";
 import axios from "axios";
 
 import Header from '../../components/Header/Header';
+import './css/styles.css'
 
 function ChapterDetail() {
   const { bookName } = useParams();
@@ -30,7 +31,7 @@ function ChapterDetail() {
     .catch(error => {
       console.error("There is no such chapter:", error);
       setChapterContent(null);
-      setError("Error fetching chapter.");
+      setError("There is no such chapter.");
     });
   }, [bookName, volume, chapter]);
 
@@ -46,31 +47,32 @@ function ChapterDetail() {
     <>  
       <Header />
       <main className="main">
-        <div className="chapter-detail-container">
-          {error ? (
-            <p>{error}</p> // Display error message if there is one
-          ) : (
-            <>
-              <h1>Chapter {chapter}</h1>
-              <div>{chapterContent}</div>
-            </>
-          )}
+        <div className="container">
+          <div className="chapter-container">
+              
+            <h1>Chapter {chapter}</h1>
+            <div className="chapter-text">{chapterContent}</div>
+
+            <div className="chapter-nav">
+              <Link to={{
+                pathname: `/books/${bookName}/read`,
+                search: `?volume=${volume}&chapter=${previousChapter}`,
+              }} className="chapter-link">
+                Previous
+              </Link>
+
+              <Link to={{
+                pathname: `/books/${bookName}/read`,
+                search: `?volume=${volume}&chapter=${nextChapter}`,
+              }} className="chapter-link">
+                Next
+              </Link>
+            </div>
+
+          </div>     
         </div>
       </main>
-      {previousChapter !== null && (
-        <Link to={{
-          pathname: `/books/${bookName}/read`,
-          search: `?volume=${volume}&chapter=${previousChapter}`,
-        }}>
-          Previous
-        </Link>
-      )}
-      <Link to={{
-        pathname: `/books/${bookName}/read`,
-        search: `?volume=${volume}&chapter=${nextChapter}`,
-      }}>
-        Next
-      </Link>
+      
     </>
   );
 }

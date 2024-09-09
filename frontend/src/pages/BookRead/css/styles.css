@@ -1,0 +1,36 @@
+.chapter-container {
+  max-width: 850px;
+  padding: 10px;
+  text-align: justify;
+  margin: 0 auto;
+}
+.chapter-container .chapter-text {
+  font-size: 1.14285714rem;
+  line-height: 1.5;
+}
+.chapter-container .read-chapter-link {
+  width: 100%;
+  padding: 10px 30px;
+  border: 1px solid rgb(68, 70, 70);
+  border-radius: 8px;
+  color: inherit;
+  text-align: center;
+}
+.chapter-container .read-chapter-link :hover {
+  background-color: #ccc;
+}
+.chapter-container .chapter-nav {
+  /* DELETE*/
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  border: 1px solid rgb(68, 70, 70);
+  border-radius: 8px;
+}
+.chapter-container .chapter-nav .chapter-link {
+  padding: 10px;
+  cursor: pointer;
+  padding: 12px 10px;
+  text-transform: uppercase;
+  transition: 0.2s;
+}/*# sourceMappingURL=styles.css.map */

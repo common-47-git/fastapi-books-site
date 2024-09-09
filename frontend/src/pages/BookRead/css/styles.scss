@@ -1,0 +1,51 @@
+
+.chapter-container {
+
+    max-width: 850px;
+
+    padding: 10px;
+    text-align: justify;
+
+    margin: 0 auto;
+
+    .chapter-text {
+        font-size: 1.14285714rem;
+        line-height: 1.5;
+    }
+
+    .read-chapter-link {
+        width: 100%;
+        padding: 10px 30px;
+        border: 1px solid rgb(68, 70, 70);
+        border-radius: 8px;
+        color: inherit;
+        text-align: center;
+
+        :hover {
+            background-color: #ccc;
+        }
+    }
+    
+    .chapter-nav {
+
+        /* DELETE*/
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+
+        border: 1px solid rgb(68, 70, 70);
+        border-radius: 8px;
+
+        .chapter-link {
+
+            padding: 10px;
+            cursor: pointer;
+            padding: 12px 10px;
+            text-transform: uppercase;
+            transition: .2s;
+        
+            
+        }
+    }
+
+}
