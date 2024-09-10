@@ -5,9 +5,10 @@ import axios from "axios";
 
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
+import BookPreview from './components/BookPreview';
 import './css/styles.css'
 
-function Books() {
+function BooksPage() {
   const [books, setBooks] = useState([]);
 
   const fetchBooks = () => {
@@ -33,10 +34,7 @@ function Books() {
             {books.length > 0 ? 
               books.map((book, index) => (
                 <Link to={`/books/${book.book_name}`} key={index} className="book-container">
-                  <div className="book-cover">
-                    <img className="book-cover-img" src={book.book_cover} alt={`${book.book_name} cover`} />
-                  </div>
-                  <div className="book-title">{book.book_name}</div>
+                  <BookPreview book={book} ></BookPreview>
                 </Link>
               )) 
               : "Loading..."
@@ -49,4 +47,4 @@ function Books() {
   );
 }
 
-export default Books;
+export default BooksPage;

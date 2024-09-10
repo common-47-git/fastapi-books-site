@@ -5,6 +5,7 @@ import HomePage from './pages/Home/HomePage';
 import BooksPage from './pages/Books/BooksPage';
 import BookPage from './pages/Book/BookPage'; 
 import BookReadPage from './pages/BookRead/BookReadPage'; 
+import NotFoundPage from './pages/NotFound/NotFoundPage'; 
 
 function App() {
   
@@ -15,6 +16,7 @@ function App() {
         <Route path="/books" element={<BooksPage />} />
         <Route path="/books/:bookName" element={<BookPage />} />
         <Route path="/books/:bookName/read" element={<BookReadPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );

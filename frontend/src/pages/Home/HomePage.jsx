@@ -2,7 +2,7 @@ import Footer from '../../components/Footer/Footer';
 import Header from '../../components/Header/Header';
 
 
-function Home() {
+function HomePage() {
   return (
     <>
       <Header />
@@ -12,4 +12,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default HomePage;

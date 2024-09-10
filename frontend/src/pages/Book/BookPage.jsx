@@ -6,7 +6,7 @@ import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import './css/styles.css'
 
-function BookDetail() {
+function BookPage() {
   const { bookName } = useParams();
   const [book, setBook] = useState(null);
   const [author, setAuthor] = useState(null);
@@ -71,4 +71,4 @@ function BookDetail() {
   );
 }
 
-export default BookDetail;
+export default BookPage;

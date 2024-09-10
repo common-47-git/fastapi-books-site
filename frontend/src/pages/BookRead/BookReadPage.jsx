@@ -5,7 +5,7 @@ import axios from "axios";
 import Header from '../../components/Header/Header';
 import './css/styles.css'
 
-function ChapterDetail() {
+function BookReadPage() {
   const { bookName } = useParams();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -77,4 +77,4 @@ function ChapterDetail() {
   );
 }
 
-export default ChapterDetail;
+export default BookReadPage;
