@@ -5,6 +5,7 @@ import axios from "axios";
 
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
+import './css/styles.css'
 
 function Books() {
   const [books, setBooks] = useState([]);
@@ -32,6 +33,9 @@ function Books() {
             {books.length > 0 ? 
               books.map((book, index) => (
                 <Link to={`/books/${book.book_name}`} key={index} className="book-container">
+                  <div className="book-cover">
+                    <img className="book-cover-img" src={book.book_cover} alt={`${book.book_name} cover`} />
+                  </div>
                   <div className="book-title">{book.book_name}</div>
                 </Link>
               )) 

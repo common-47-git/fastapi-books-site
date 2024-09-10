@@ -13,7 +13,7 @@ engine = create_async_engine(
 
 session_local = async_sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-async def get_session():
+async def get_session():      
     session = session_local()
     try:
         yield session

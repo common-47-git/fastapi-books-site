@@ -4,11 +4,6 @@
   flex-direction: column;
 }
 
-.container {
-  width: 1127px;
-  margin: 0 auto;
-}
-
 .main {
   flex-grow: 1;
   display: flex;
@@ -16,3 +11,14 @@
   /*justify-self: center;*/
   flex-direction: column;
 }
+
+.container {
+  width: 1127px;
+  margin: 0 auto;
+  padding: 0px 5px;
+}
+
+.book-cover-img {
+    object-fit: cover;
+}
+

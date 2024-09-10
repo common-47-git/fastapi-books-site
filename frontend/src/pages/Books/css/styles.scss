@@ -1,21 +1,36 @@
 
-.chapter-content {
-    padding: 10px;
-    border: 1px solid rgb(255, 255, 255);
-    text-align: justify;
+.books-grid {
 
-    .read-chapter-link {
-        width: 100%;
-        padding: 10px 30px;
-        border: 1px solid #fff;
-        border-radius: 8px;
-        color: inherit;
-        text-align: center;
+    display: flex;
+    flex-wrap: wrap;
 
-        :hover {
-            background-color: #ccc;
+    .book-container {
+        padding: 5px;
+        position: relative;
+        
+        .book-cover {
+
+            .book-cover-img {
+                width: 200px;
+                height: 300px;
+            }
+
+            :hover {
+                box-shadow:5px 5px 5px rgba(202, 202, 202, 0.124)
+            }
+        }
+    
+        .book-title {
+            padding: 1px;
+
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+
+            font-size: 17px;
+            color: #ffffffea;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
     }
-      
-
 }
+

@@ -1,6 +1,5 @@
 from sqlalchemy import Integer, String, DATE, ForeignKey, TEXT
 from sqlalchemy.orm import Mapped, mapped_column
-from datetime import date
 from src.database import Base
 
 class BookModel(Base):
@@ -9,9 +8,10 @@ class BookModel(Base):
     book_id: Mapped[int] = mapped_column(Integer, primary_key=True, nullable=False)
     book_name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     book_country: Mapped[str] = mapped_column(String(50), nullable=True)
-    book_release_date: Mapped[date] = mapped_column(DATE, nullable=True)
+    book_release_date: Mapped[DATE] = mapped_column(DATE, nullable=True)
     book_translation_status: Mapped[str] = mapped_column(String(50), nullable=True)
     book_description: Mapped[str] = mapped_column(String(1500), nullable=True)
+    book_cover: Mapped[str] = mapped_column(String(500), nullable=False)
 
 
 class TagModel(Base):

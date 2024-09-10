@@ -9,6 +9,7 @@ class BookBase(BaseModel):
     book_release_date: date | None = None
     book_translation_status: str | None = Field(default=None, max_length=50)
     book_description: str | None = Field(default=None, max_length=1500)
+    book_cover: str = Field(default="https://ranobehub.org/img/ranobe/posters/default.jpg", max_length=500)
     
 
 class BookCreate(BookBase):

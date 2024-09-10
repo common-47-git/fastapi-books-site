@@ -19,7 +19,7 @@ from src.database import async_session_dependency
 async def get_books(
     session: async_session_dependency
 ):
-    stmt = select(BookModel) #.limit( )
+    stmt = select(BookModel) #.limit(5)
     result = await session.execute(stmt)
     books = result.scalars().all()
             
@@ -66,7 +66,7 @@ async def get_book_chapter(
     .filter(VolumeModel.volume_number == volume_number)
     .filter(BookModel.book_name == book_name)
     )
-    
+
     result = await session.execute(query)
     chapter_content = result.scalars().first()
     

@@ -4,6 +4,7 @@ import { useParams, useSearchParams, Link } from "react-router-dom";
 
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
+import './css/styles.css'
 
 function BookDetail() {
   const { bookName } = useParams();
@@ -40,20 +41,28 @@ function BookDetail() {
       <Header></Header>
       <main className="main">
         <div className="container">
-          <div className="main-book-detail">
-            <div className="book-detail-container">
-              <h1>{book.book_name}</h1>
-              <div><strong>Author:</strong> {author.author_name} {author.author_surname}</div>
-              <div><strong>Country:</strong> {book.book_country}</div>
-              <div><strong>Release Date:</strong> {new Date(book.book_release_date).toLocaleDateString()}</div>
-              <div><strong>Description:</strong> {book.book_description || "No description available"}</div>
-            </div>
-            <Link to={{
-                pathname: `/books/${bookName}/read`,
-                search: `?volume=${volume}&chapter=${chapter}`,
-              }} className="read-chapter-link" >
-              Read
-            </Link>
+          <div className="book-detail">
+
+              <div className="book-nav">
+                <div className="book-cover">
+                  <img className="book-cover-img" src={book.book_cover} alt={`${book.book_name} cover`} />
+                </div>
+                <Link to={{
+                  pathname: `/books/${bookName}/read`,
+                  search: `?volume=${volume}&chapter=${chapter}`, }} 
+                  className="book-read-link">
+                  Read
+                </Link>
+              </div>
+
+              <div className="book-detail-container">
+                <h1>{book.book_name}</h1>
+                <div className="book-detail-row"><strong>Author:</strong> {author.author_name} {author.author_surname}</div>
+                <div className="book-detail-row"><strong>Country:</strong> {book.book_country}</div>
+                <div className="book-detail-row"><strong>Release Date:</strong> {new Date(book.book_release_date).toLocaleDateString()}</div>
+                <div className="book-detail-row"><strong>Description:</strong> {book.book_description || "No description available"}</div>
+              </div>
+
           </div>
         </div>
       </main>
