@@ -33,7 +33,7 @@
         display: flex;
         justify-content: center;
 
-        border: 1px solid rgb(68, 70, 70);
+        border: 1px solid rgba(157, 52, 52, 0.483);
         border-radius: 8px;
 
         .chapter-link {
@@ -43,8 +43,6 @@
             padding: 12px 10px;
             text-transform: uppercase;
             transition: .2s;
-        
-            
         }
     }
 

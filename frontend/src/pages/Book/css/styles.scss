@@ -1,10 +1,12 @@
 
 .book-detail {
+
     display: flex;
     flex-direction: row;
     width: 100%;
 
     .book-nav {
+
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -16,25 +18,20 @@
         .book-cover {
 
             .book-cover-img {
+
                 width: 250px;
                 height: 340px;
             }
         }
-
-        .book-read-link {
-            text-align: center;
-            padding: 10px 30px;
-            border-radius: 4px;
-            background-color: rgb(38, 100, 145);
-            color: #fff;
-        }
     }
 
     .book-detail-container {
+
         padding: 30px;
         min-width: 100%;
 
         .book-detail-row {
+            
             border-bottom: 1px solid rgb(68, 70, 70);
             padding: 15px 0;
         }

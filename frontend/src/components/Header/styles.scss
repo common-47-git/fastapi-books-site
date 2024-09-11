@@ -1,21 +1,33 @@
-.header {
-    border-bottom: 1px solid rgb(68, 70, 70);
-  
-  .header-nav {
-    padding: 10px;
-  
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .header-nav-el {
-    color: #ccc;
-    padding: 5px;
-  }
-    
-  :hover {
-    color: #ff0000;
-  }
 
+.header {
+
+    border-bottom: 1px solid rgba(157, 52, 52, 0.483);
+
+    .header-nav{
+
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+
+        .header-nav-el {
+            color: #ccc;
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgb(157, 52, 52);
+            gap: 5px;
+
+            .header-nav-icon {
+                width: 15px;
+            }
+
+            &:hover {
+                transition: 0.1s;
+                transform: scale(1.1);
+            }
+        }
+    }
 }

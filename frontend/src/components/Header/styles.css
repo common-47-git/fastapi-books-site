@@ -1,16 +1,25 @@
 .header {
-  border-bottom: 1px solid rgb(68, 70, 70);
+  border-bottom: 1px solid rgba(157, 52, 52, 0.483);
 }
 .header .header-nav {
   padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 40px;
 }
-.header .header-nav-el {
+.header .header-nav .header-nav-el {
   color: #ccc;
-  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(157, 52, 52);
+  gap: 5px;
 }
-.header :hover {
-  color: #ff0000;
+.header .header-nav .header-nav-el .header-nav-icon {
+  width: 15px;
+}
+.header .header-nav .header-nav-el:hover {
+  transition: 0.1s;
+  transform: scale(1.1);
 }/*# sourceMappingURL=styles.css.map */

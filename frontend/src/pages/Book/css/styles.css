@@ -14,13 +14,6 @@
   width: 250px;
   height: 340px;
 }
-.book-detail .book-nav .book-read-link {
-  text-align: center;
-  padding: 10px 30px;
-  border-radius: 4px;
-  background-color: rgb(38, 100, 145);
-  color: #fff;
-}
 .book-detail .book-detail-container {
   padding: 30px;
   min-width: 100%;

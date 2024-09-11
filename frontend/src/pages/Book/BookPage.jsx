@@ -4,6 +4,7 @@ import { useParams, useSearchParams, Link } from "react-router-dom";
 
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
+import DefaultButton from '../../components/DefaultButton/DefaultButton';
 import './css/styles.css'
 
 function BookPage() {
@@ -49,9 +50,8 @@ function BookPage() {
                 </div>
                 <Link to={{
                   pathname: `/books/${bookName}/read`,
-                  search: `?volume=${volume}&chapter=${chapter}`, }} 
-                  className="book-read-link">
-                  Read
+                  search: `?volume=${volume}&chapter=${chapter}`, }} >
+                  <DefaultButton content={"READ"} ></DefaultButton>
                 </Link>
               </div>
 

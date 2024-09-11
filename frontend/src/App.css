@@ -19,6 +19,7 @@
 }
 
 .book-cover-img {
-  object-fit: cover;
-}
-
+  -o-object-fit: cover;
+     object-fit: cover;
+     border-radius: 4px;
+}/*# sourceMappingURL=App.css.map */
