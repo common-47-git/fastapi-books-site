@@ -1,0 +1,24 @@
+.books-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+.books-grid .book-container {
+  padding: 5px;
+  position: relative;
+}
+.books-grid .book-container .book-cover .book-cover-img {
+  width: 200px;
+  height: 300px;
+}
+.books-grid .book-container .book-cover :hover {
+  box-shadow: 5px 5px 5px rgba(202, 202, 202, 0.124);
+}
+.books-grid .book-container .book-title {
+  padding: 1px;
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.9176470588);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}/*# sourceMappingURL=styles.css.map */

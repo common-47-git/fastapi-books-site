@@ -51,7 +51,7 @@ async def read_current_user(
     return current_user
 
 
-@users_router.get("/{username}/books", response_model=list[BookRead])
+@users_router.get("/books", response_model=list[BookRead])
 async def read_user_books(
     current_user: Annotated[UserRead, Depends(get_current_user)],
     session: async_session_dependency

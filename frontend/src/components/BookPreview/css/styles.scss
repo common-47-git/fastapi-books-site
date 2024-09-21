@@ -1,0 +1,36 @@
+
+.books-grid {
+
+    display: flex;
+    flex-wrap: wrap;
+
+    .book-container {
+        padding: 5px;
+        position: relative;
+        
+        .book-cover {
+
+            .book-cover-img {
+                width: 200px;
+                height: 300px;
+            }
+
+            :hover {
+                box-shadow:5px 5px 5px rgba(202, 202, 202, 0.124)
+            }
+        }
+    
+        .book-title {
+            padding: 1px;
+
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+
+            font-size: 17px;
+            color: #ffffffea;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+    }
+}
+

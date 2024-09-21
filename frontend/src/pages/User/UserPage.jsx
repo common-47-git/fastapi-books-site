@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import Footer from '../../components/Footer/Footer';
 import Header from '../../components/Header/Header';
+import BookPreview from '../../components/BookPreview/BookPreview'; 
 
 function UserPage() {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
+  const [books, setBooks] = useState([]);
   const [searchParams] = useSearchParams(); 
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const username = searchParams.get('username'); 
-      try {
-        const token = localStorage.getItem('accessToken');
+      const token = localStorage.getItem('accessToken');
 
+      try {
         const response = await fetch('http://127.0.0.1:8000/users/me', {
           method: 'GET',
           headers: {
@@ -28,31 +29,66 @@ function UserPage() {
 
         const data = await response.json();
         setUserData(data);
+
+        // Fetch books after getting user data
+        await fetchBooks(data.username);
       } catch (err) {
         setError(err.message);
       }
     };
 
     fetchUserData();
-  }, [searchParams]);
+  }, []); // Only run on mount
+
+  const fetchBooks = async (username) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/users/books`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,  
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch books');
+      }
+
+      const booksData = await response.json();
+      setBooks(booksData);
+    } catch (error) {
+      console.error("Error fetching books:", error);
+    }
+  };
 
   return (
     <>
       <Header />
       <main className="main">
-        {error ? (
-          <p style={{ color: 'red' }}>{error}</p>
-        ) : userData ? (
-          <div>
-            <h2>User Info</h2>
-            <p><strong>Username:</strong> {userData.username}</p>
-            <p><strong>Email:</strong> {userData.email}</p>
-            <p><strong>Registration Date:</strong> {userData.registration_date || 'N/A'}</p>
-            <p><strong>Disabled:</strong> {userData.disabled ? 'Yes' : 'No'}</p>
+        <div className="container">
+          {error ? (
+            <p style={{ color: 'red' }}>{error}</p>
+          ) : userData ? (
+            <div>
+              <h2>User Info</h2>
+              <p><strong>Username:</strong> {userData.username}</p>
+              <p><strong>Email:</strong> {userData.email}</p>
+              <p><strong>Registration Date:</strong> {userData.registration_date || 'N/A'}</p>
+              <p><strong>Disabled:</strong> {userData.disabled ? 'Yes' : 'No'}</p>
+            </div>
+          ) : (
+            <p>Loading user data...</p>
+          )}
+          <div className="books-grid">
+            {books.length > 0 ? 
+              books.map((book, index) => (
+                <Link to={`/books/${book.book_name}`} key={index} className="book-container">
+                  <BookPreview book={book} />
+                </Link>
+              )) 
+              : "Loading books..."
+            }
           </div>
-        ) : (
-          <p>Loading user data...</p>
-        )}
+        </div>
       </main>
       <Footer />
     </>
