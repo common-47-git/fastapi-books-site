@@ -6,6 +6,7 @@ import BooksPage from './pages/Books/BooksPage';
 import BookPage from './pages/Book/BookPage'; 
 import BookReadPage from './pages/BookRead/BookReadPage'; 
 import UserLogin from './pages/UserLogin/UserLogin'; 
+import UserPage from './pages/User/UserPage'; 
 import NotFoundPage from './pages/NotFound/NotFoundPage'; 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/books/:bookName" element={<BookPage />} />
         <Route path="/books/:bookName/read" element={<BookReadPage />} />
         <Route path="/users/login" element={<UserLogin />} />
+        <Route path="/users" element={<UserPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>

@@ -32,4 +32,3 @@ class Base(DeclarativeBase):
             else:
                 continue
         return f"{self.__tablename__}({columns_values.strip()})"
-

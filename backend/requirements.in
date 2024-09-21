@@ -8,3 +8,4 @@ bcrypt
 passlib
 redis
 python-dotenv
+redis
