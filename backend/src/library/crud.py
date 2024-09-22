@@ -1,8 +1,9 @@
 from typing import Annotated
 from fastapi import Depends
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 
-from src.library import schemas
+from src.library.schemas import books
 from src.library.models import (
     BookModel,
     BooksAuthorsModel,
@@ -19,7 +20,7 @@ from src.database import async_session_dependency
 async def get_books(
     session: async_session_dependency
 ):
-    stmt = select(BookModel) #.limit(5)
+    stmt = select(BookModel).options(selectinload(BookModel.book_authors)) #.limit(5)
     result = await session.execute(stmt)
     books = result.scalars().all()
             
@@ -30,7 +31,11 @@ async def get_book_by_name(
     book_name: str,
     session: async_session_dependency
 ):
-    stmt = select(BookModel).where(BookModel.book_name == book_name)
+    stmt = (
+        select(BookModel)
+        .options(selectinload(BookModel.book_authors))
+        .where(BookModel.book_name == book_name)
+    )
     result = await session.execute(stmt)
     book = result.scalars().first()
     

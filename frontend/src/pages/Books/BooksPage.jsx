@@ -12,7 +12,7 @@ function BooksPage() {
   const [books, setBooks] = useState([]);
 
   const fetchBooks = () => {
-    axios.get("http://127.0.0.1:8000/books")
+    axios.get("http://127.0.0.1:8000/books/all")
       .then(response => {
         setBooks(response.data);
       })
@@ -34,7 +34,7 @@ function BooksPage() {
             {books.length > 0 ? 
               books.map((book, index) => (
                 <Link to={`/books/${book.book_name}`} key={index} className="book-container">
-                  <BookPreview book={book} ></BookPreview>
+                  <BookPreview book={book}></BookPreview>
                 </Link>
               )) 
               : "Loading..."

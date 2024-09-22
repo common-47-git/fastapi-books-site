@@ -20,7 +20,7 @@ function App() {
         <Route path="/books/:bookName/read" element={<BookReadPage />} />
         <Route path="/users/login" element={<UserLogin />} />
         <Route path="/users" element={<UserPage />} />
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path="/404" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );

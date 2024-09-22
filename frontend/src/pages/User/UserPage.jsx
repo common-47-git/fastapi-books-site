@@ -73,11 +73,12 @@ function UserPage() {
               <p><strong>Username:</strong> {userData.username}</p>
               <p><strong>Email:</strong> {userData.email}</p>
               <p><strong>Registration Date:</strong> {userData.registration_date || 'N/A'}</p>
-              <p><strong>Disabled:</strong> {userData.disabled ? 'Yes' : 'No'}</p>
             </div>
           ) : (
             <p>Loading user data...</p>
           )}
+          <hr/>
+          <h2>Your Books</h2>
           <div className="books-grid">
             {books.length > 0 ? 
               books.map((book, index) => (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams, Link } from "react-router-dom";
+import { useLocation, useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Header from '../../components/Header/Header';
@@ -8,9 +8,9 @@ import './css/styles.css'
 function BookReadPage() {
   const { bookName } = useParams();
   const location = useLocation();
+  const navigate = useNavigate(); // Use navigate for redirect
   const query = new URLSearchParams(location.search);
   const [chapterContent, setChapterContent] = useState(null);
-  const [error, setError] = useState(null);
   const volume = query.get('volume') || 1;
   const chapter = query.get('chapter') || 1;
 
@@ -21,26 +21,20 @@ function BookReadPage() {
     .then(response => {
       if (response.data) {
         setChapterContent(response.data);
-        setError(null); // Clear any previous errors
       } else {
-        // Handle case where chapter data is empty or not found
-        setChapterContent(null);
-        setError("Chapter not found.");
+        // Redirect to the 404 page if no data is found
+        navigate('/404');
       }
     })
     .catch(error => {
-      console.error("There is no such chapter:", error);
-      setChapterContent(null);
-      setError("There is no such chapter.");
+      if (error.response && error.response.status === 404) {
+        navigate('/404'); // Redirect to the 404 page on error
+      }
     });
-  }, [bookName, volume, chapter]);
+  }, [bookName, volume, chapter, navigate]);
 
   const chapterNumber = parseInt(chapter, 10);
-
-  // Calculate chapter for the Previous link
-  const previousChapter = chapterNumber > 1 ? chapterNumber - 1 : null;
-
-  // Calculate chapter for the Next link
+  const previousChapter = chapterNumber > 1 ? chapterNumber - 1 : 1;
   const nextChapter = chapterNumber + 1;
 
   return (
@@ -49,18 +43,21 @@ function BookReadPage() {
       <main className="main">
         <div className="container">
           <div className="chapter-container">
-              
             <h1>Chapter {chapter}</h1>
             <div className="chapter-text">{chapterContent}</div>
 
             <div className="chapter-nav">
-              <Link to={{
-                pathname: `/books/${bookName}/read`,
-                search: `?volume=${volume}&chapter=${previousChapter}`,
-              }} className="chapter-link">
-                Previous
-              </Link>
-
+              {chapter > 1 && (
+                <Link 
+                  to={{
+                    pathname: `/books/${bookName}/read`,
+                    search: `?volume=${volume}&chapter=${previousChapter}`,
+                  }} 
+                  className="chapter-link"
+                >
+                  Previous
+                </Link>
+              )}
               <Link to={{
                 pathname: `/books/${bookName}/read`,
                 search: `?volume=${volume}&chapter=${nextChapter}`,
@@ -68,11 +65,9 @@ function BookReadPage() {
                 Next
               </Link>
             </div>
-
-          </div>     
+          </div>
         </div>
       </main>
-      
     </>
   );
 }

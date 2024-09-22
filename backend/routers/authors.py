@@ -1,12 +1,12 @@
 from fastapi import APIRouter, HTTPException
 
-from src.library import schemas
+from src.library.schemas import authors, books
 from src.library import crud
 from src.database import async_session_dependency
 
 authors_router = APIRouter(prefix="/authors", tags=["authors"])
 
-@authors_router.get("/", response_model=list[schemas.AuthorRead])
+@authors_router.get("/", response_model=list[authors.AuthorRead])
 async def read_authors(
     session: async_session_dependency
 ):
@@ -20,7 +20,7 @@ async def read_authors(
     return authors
 
 
-@authors_router.get("/{author_name}", response_model=list[schemas.BookRead])
+@authors_router.get("/{author_name}", response_model=list[books.BookRead])
 async def read_books_by_author(
     author_name: str,
     session: async_session_dependency

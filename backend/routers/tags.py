@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
 
-from src.library import schemas
+from src.library.schemas import tags
 from src.library import crud
 from src.database import async_session_dependency
 
 tags_router = APIRouter(prefix="/tags", tags=["tags"])
 
 
-@tags_router.get("/", response_model=list[schemas.TagRead])
+@tags_router.get("/", response_model=list[tags.TagRead])
 async def read_tags(
     session: async_session_dependency
 ):

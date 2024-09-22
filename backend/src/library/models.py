@@ -1,5 +1,6 @@
-from sqlalchemy import Integer, String, DATE, ForeignKey, TEXT
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Column, Integer, String, DATE, ForeignKey, TEXT, Table
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from src.library.books_authors import BooksAuthorsModel
 from src.database import Base
 
 class BookModel(Base):
@@ -12,6 +13,11 @@ class BookModel(Base):
     book_translation_status: Mapped[str] = mapped_column(String(50), nullable=True)
     book_description: Mapped[str] = mapped_column(String(1500), nullable=True)
     book_cover: Mapped[str] = mapped_column(String(500), nullable=False)
+    
+    book_authors: Mapped[list["AuthorModel"]] = relationship(
+        back_populates="author_books",
+        secondary=BooksAuthorsModel,
+    )
 
 
 class TagModel(Base):
@@ -54,9 +60,9 @@ class AuthorModel(Base):
     author_name: Mapped[str] = mapped_column(String(50), nullable=True)
     author_surname: Mapped[str] = mapped_column(String(50), nullable=True)
     
-    
-class BooksAuthorsModel(Base):
-    __tablename__ = "books-authors"
-    
-    book_id: Mapped[int] = mapped_column(Integer, ForeignKey("books.book_id"), primary_key=True, nullable=False)
-    author_id: Mapped[int] = mapped_column(Integer, ForeignKey("authors.author_id"), primary_key=True, nullable=False)    
+    author_books: Mapped[list["BookModel"]] = relationship(
+        back_populates="book_authors",
+        secondary=BooksAuthorsModel,
+    )
+
+

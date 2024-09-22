@@ -7,7 +7,7 @@ from typing import Annotated
 from src.users.auth import create_access_token
 from src.users.crud import authenticate_user, get_current_user, get_user_books, post_user
 from src.users.schemas import Token, UserRead, UserCreate
-from src.library.schemas import BookRead
+from src.library.schemas import books
 from src.database import async_session_dependency
 from env.config import ACCESS_TOKEN_EXPIRE_MINUTES
 
@@ -51,9 +51,9 @@ async def read_current_user(
     return current_user
 
 
-@users_router.get("/books", response_model=list[BookRead])
+@users_router.get("/books", response_model=list[books.BookRead])
 async def read_user_books(
     current_user: Annotated[UserRead, Depends(get_current_user)],
     session: async_session_dependency
-) -> list[BookRead]:
+) -> list[books.BookRead]:
     return await get_user_books(username=current_user.username, session=session)
