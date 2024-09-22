@@ -1,0 +1,27 @@
+.footer {
+    background-color: rgba(165, 42, 42, 0.049);
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .footer-content {
+    margin-bottom: 10px;
+  }
+  
+  .footer-link {
+    color: #61dafb;
+    margin: 0 10px;
+    text-decoration: none;
+  }
+  
+  .footer-link:hover {
+    text-decoration: underline;
+  }
+  
+  .footer-bottom {
+    border-top: 1px solid #ffffff;
+    padding-top: 10px;
+    font-size: 0.9em;
+  }
+  

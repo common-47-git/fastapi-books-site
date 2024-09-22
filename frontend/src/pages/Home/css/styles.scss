@@ -1,21 +1,4 @@
-
-.chapter-content {
-    padding: 10px;
-    border: 1px solid rgb(255, 255, 255);
-    text-align: justify;
-
-    .read-chapter-link {
-        width: 100%;
-        padding: 10px 30px;
-        border: 1px solid #fff;
-        border-radius: 8px;
-        color: inherit;
-        text-align: center;
-
-        :hover {
-            background-color: #ccc;
-        }
-    }
-      
-
+.books-recently {
+    border: 1px solid rgba(157, 52, 52, 0.483);
+    padding: 20px;
 }

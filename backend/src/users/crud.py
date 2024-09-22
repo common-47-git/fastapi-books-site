@@ -8,7 +8,7 @@ from env.config import ALGORITHM, SECRET_KEY
 from src.database import async_session_dependency
 from src.users.schemas import UserCreate, UserInDB, TokenData, UserRead
 from src.users.models import UserModel, UsersBooksModel
-from src.library.models import BookModel
+from src.library.models.books_authors import BookModel
 from src.users.auth import get_password_hash, oauth2_scheme, verify_password
 
 

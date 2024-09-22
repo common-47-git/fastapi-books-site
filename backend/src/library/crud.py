@@ -3,16 +3,10 @@ from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
-from src.library.schemas import books
-from src.library.models import (
-    BookModel,
-    BooksAuthorsModel,
-    BooksTagsModel,
-    VolumeModel,
-    ChapterModel,
-    TagModel, 
-    AuthorModel 
-)
+from src.library.models.books_authors import BooksAuthorsModel, BookModel, AuthorModel
+from src.library.models.chapter import ChapterModel
+from src.library.models.tag import TagModel
+from src.library.models.volume import VolumeModel
 from src.database import async_session_dependency
 
 ######### Books CRUD #########
