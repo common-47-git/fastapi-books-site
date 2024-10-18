@@ -3,7 +3,9 @@ from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
-from src.library.models.books_authors import BooksAuthorsModel, BookModel, AuthorModel
+from src.library.models.author import AuthorModel
+from src.library.models.books_authors import BooksAuthorsModel
+from src.library.models.book import BookModel
 from src.library.models.chapter import ChapterModel
 from src.library.models.tag import TagModel
 from src.library.models.volume import VolumeModel
@@ -14,7 +16,7 @@ from src.database import async_session_dependency
 async def get_books(
     session: async_session_dependency
 ):
-    stmt = select(BookModel).options(selectinload(BookModel.book_authors)) #.limit(5)
+    stmt = select(BookModel) #.limit(5)
     result = await session.execute(stmt)
     books = result.scalars().all()
             
@@ -27,7 +29,6 @@ async def get_book_by_name(
 ):
     stmt = (
         select(BookModel)
-        .options(selectinload(BookModel.book_authors))
         .where(BookModel.book_name == book_name)
     )
     result = await session.execute(stmt)
@@ -36,7 +37,7 @@ async def get_book_by_name(
     return book
 
 
-async def get_book_author_by_name(
+async def get_authors_by_book_name(
     book_name: str,
     session: async_session_dependency
 ):
@@ -46,7 +47,7 @@ async def get_book_author_by_name(
         .join(BookModel)
         .where(BookModel.book_name == book_name))
     result = await session.execute(stmt)
-    author = result.scalars().first()
+    author = result.scalars().all()
     
     return author
 

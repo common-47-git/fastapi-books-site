@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import books, tags, authors, users
+from src.routers import books, tags, authors, users
 
 
 app = FastAPI(title="Books site")

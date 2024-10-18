@@ -1,14 +1,14 @@
 from fastapi import APIRouter, HTTPException
 
-from src.library.schemas import books, authors, books_authors
+from src.library.schemas import books, authors
 from src.library import crud
 from src.database import async_session_dependency
 
 books_router = APIRouter(prefix="/books", tags=["books"])
 
-@books_router.get("/all", response_model=list[books_authors.BooksAuthors])
+@books_router.get("/all", response_model=list[books.BookBase])
 async def read_books(session: async_session_dependency
-                     )-> list[books_authors.BooksAuthors]:
+                     )-> list[books.BookBase]:
     try:
         books = await crud.get_books(session=session)
     except Exception as e:
@@ -21,7 +21,7 @@ async def read_books(session: async_session_dependency
 
 
 
-@books_router.get("/{book_name}", response_model=books_authors.BooksAuthors)
+@books_router.get("/{book_name}", response_model=books.BookBase)
 async def read_book_by_name(
     book_name: str,
     session: async_session_dependency
@@ -36,19 +36,19 @@ async def read_book_by_name(
     return book
 
 
-@books_router.get("/{book_name}/author", response_model=authors.AuthorRead)
-async def read_author_by_book_name(
+@books_router.get("/{book_name}/authors", response_model=list[authors.AuthorRead])
+async def read_authors_by_book_name(
     book_name: str,
     session: async_session_dependency
 ):
     try:
-        book = await crud.get_book_author_by_name(book_name=book_name, session=session)
+        authors = await crud.get_authors_by_book_name(book_name=book_name, session=session)
     except Exception:
         raise HTTPException(status_code=500)
     
-    if not book:
+    if not authors:
         raise HTTPException(status_code=404)
-    return book
+    return authors
 
 
 @books_router.get("/{book_name}/read")

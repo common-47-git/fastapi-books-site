@@ -10,18 +10,37 @@ import './css/styles.css';
 function BookPage() {
   const { bookName } = useParams();
   const [book, setBook] = useState(null);
+  const [authors, setAuthors] = useState([]); // State to hold authors
   const [searchParams] = useSearchParams();
   const volume = searchParams.get('volume') || 1;
   const chapter = searchParams.get('chapter') || 1;
 
+  // Fetch book details
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/books/${bookName}`)
-      .then(response => {
+    const fetchBook = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/books/${bookName}`);
         setBook(response.data);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error("Error fetching book:", error);
-      });
+      }
+    };
+
+    fetchBook();
+  }, [bookName]);
+
+  // Fetch authors
+  useEffect(() => {
+    const fetchAuthors = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/books/${bookName}/authors`);
+        setAuthors(response.data);
+      } catch (error) {
+        console.error("Error fetching authors:", error);
+      }
+    };
+
+    fetchAuthors();
   }, [bookName]);
 
   if (!book) {
@@ -29,7 +48,7 @@ function BookPage() {
   }
 
   // Format author names
-  const authorNames = book.book_authors.map(author => `${author.author_name} ${author.author_surname}`).join(', ');
+  const authorNames = authors.map(author => `${author.author_name} ${author.author_surname}`).join(', ');
 
   return (
     <>
