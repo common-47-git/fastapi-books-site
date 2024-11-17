@@ -5,10 +5,12 @@ from sqlalchemy.orm import selectinload
 
 from src.library.models.author import AuthorModel
 from src.library.models.books_authors import BooksAuthorsModel
+from src.library.models.books_tags import BooksTagsModel
 from src.library.models.book import BookModel
 from src.library.models.chapter import ChapterModel
 from src.library.models.tag import TagModel
 from src.library.models.volume import VolumeModel
+from src.library.schemas import tags
 from src.database import async_session_dependency
 
 ######### Books CRUD #########
@@ -35,6 +37,21 @@ async def get_book_by_name(
     book = result.scalars().first()
     
     return book
+
+
+async def get_tags_by_book_name(
+    book_name: str,
+    session: async_session_dependency
+) -> list[tags.TagInDB]:
+    stmt = (
+        select(TagModel)
+        .join(BooksTagsModel)
+        .join(BookModel)
+        .where(BookModel.book_name == book_name))
+    result = await session.execute(stmt)
+    tags = result.scalars().all()
+    
+    return tags
 
 
 async def get_authors_by_book_name(

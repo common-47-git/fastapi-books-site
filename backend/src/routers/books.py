@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from src.library.schemas import books, authors
+from src.library.schemas import books, authors, book_info
 from src.library import crud
 from src.database import async_session_dependency
 
@@ -20,35 +20,21 @@ async def read_books(session: async_session_dependency
     return books
 
 
-
-@books_router.get("/{book_name}", response_model=books.BookBase)
+@books_router.get("/{book_name}", response_model=book_info.BookInfoRead)
 async def read_book_by_name(
     book_name: str,
     session: async_session_dependency
 ):
     try:
         book = await crud.get_book_by_name(book_name=book_name, session=session)
+        book_tags = await crud.get_tags_by_book_name(book_name=book_name, session=session)
+        book_authors = await crud.get_authors_by_book_name(book_name=book_name, session=session)
     except Exception:
         raise HTTPException(status_code=500)
     
     if not book:
         raise HTTPException(status_code=404)
-    return book
-
-
-@books_router.get("/{book_name}/authors", response_model=list[authors.AuthorRead])
-async def read_authors_by_book_name(
-    book_name: str,
-    session: async_session_dependency
-):
-    try:
-        authors = await crud.get_authors_by_book_name(book_name=book_name, session=session)
-    except Exception:
-        raise HTTPException(status_code=500)
-    
-    if not authors:
-        raise HTTPException(status_code=404)
-    return authors
+    return {"book": book, "book_tags": book_tags, "book_authors": book_authors}
 
 
 @books_router.get("/{book_name}/read")

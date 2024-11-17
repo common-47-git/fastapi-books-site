@@ -9,46 +9,36 @@ import './css/styles.css';
 
 function BookPage() {
   const { bookName } = useParams();
-  const [book, setBook] = useState(null);
-  const [authors, setAuthors] = useState([]); // State to hold authors
+  const [bookInfo, setBookInfo] = useState(null); // Combined state for book info
   const [searchParams] = useSearchParams();
   const volume = searchParams.get('volume') || 1;
   const chapter = searchParams.get('chapter') || 1;
 
-  // Fetch book details
+  // Fetch all book information (book, authors, tags)
   useEffect(() => {
-    const fetchBook = async () => {
+    const fetchBookInfo = async () => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/books/${bookName}`);
-        setBook(response.data);
+        setBookInfo(response.data);
       } catch (error) {
-        console.error("Error fetching book:", error);
+        console.error("Error fetching book info:", error);
       }
     };
 
-    fetchBook();
+    fetchBookInfo();
   }, [bookName]);
 
-  // Fetch authors
-  useEffect(() => {
-    const fetchAuthors = async () => {
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/books/${bookName}/authors`);
-        setAuthors(response.data);
-      } catch (error) {
-        console.error("Error fetching authors:", error);
-      }
-    };
-
-    fetchAuthors();
-  }, [bookName]);
-
-  if (!book) {
+  if (!bookInfo) {
     return <div>Loading...</div>;
   }
 
+  const { book, book_tags: bookTags, book_authors: bookAuthors } = bookInfo;
+
   // Format author names
-  const authorNames = authors.map(author => `${author.author_name} ${author.author_surname}`).join(', ');
+  const authorNames = bookAuthors.map(author => `${author.author_name} ${author.author_surname}`).join(', ');
+
+  // Format tags
+  const tagNames = bookTags.map(tag => tag.tag_name).join(', ');
 
   return (
     <>
@@ -73,6 +63,7 @@ function BookPage() {
               <div className="book-detail-row"><strong>Author:</strong> {authorNames || "Unknown"}</div>
               <div className="book-detail-row"><strong>Country:</strong> {book.book_country}</div>
               <div className="book-detail-row"><strong>Release Date:</strong> {new Date(book.book_release_date).toLocaleDateString()}</div>
+              <div className="book-detail-row"><strong>Tags:</strong> {tagNames || "No tags available"}</div>
               <div className="book-detail-row"><strong>Description:</strong> {book.book_description || "No description available"}</div>
             </div>
           </div>
