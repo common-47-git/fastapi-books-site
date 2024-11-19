@@ -5,9 +5,10 @@ from datetime import timedelta
 from typing import Annotated
 
 from src.users.auth import create_access_token
-from src.users.crud import authenticate_user, get_current_user, get_user_books, post_user
+from src.users.crud import authenticate_user, get_current_user, get_user_books, post_user, post_a_book_to_the_current_users_library
 from src.users.schemas import Token, UserRead, UserCreate
 from src.library.schemas import books
+from src.library import crud
 from src.database import async_session_dependency
 from env.config import ACCESS_TOKEN_EXPIRE_MINUTES
 
@@ -57,3 +58,24 @@ async def read_user_books(
     session: async_session_dependency
 ) -> list[books.BookRead]:
     return await get_user_books(username=current_user.username, session=session)
+
+
+@users_router.post("/bookmark")
+async def add_a_book_to_the_current_users_library(
+    book_name: str,
+    shelf: str,
+    current_user: Annotated[UserRead, Depends(get_current_user)],
+    session: async_session_dependency
+):
+    try:
+        book = await post_a_book_to_the_current_users_library(
+            book_name=book_name, 
+            username=current_user.username,
+            shelf_to_put=shelf,
+            session=session
+        )
+    except HTTPException as http_exc:
+        raise http_exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+    return {"status": 200, "detail": "Book added to library", "data": book}

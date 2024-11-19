@@ -43,3 +43,20 @@ class UserInDB(UserBase):
 class UserBooksBase(BaseModel):
     user_id: int
     book_id: int
+    book_shelf: str
+
+
+class UserBooksCreate(UserBooksBase):
+    pass
+
+
+class UserBooksRead(UserBooksBase):
+    pass
+
+
+class UserBooksUpdate(UserBooksBase):
+    pass
+
+
+class UserBooksInDB(UserBooksBase):
+    pass

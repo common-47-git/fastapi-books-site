@@ -1,12 +1,12 @@
 from typing import Annotated
 
 from fastapi import Depends, HTTPException
-from sqlalchemy import select
+from sqlalchemy import select, insert
 from jose import JWTError, jwt # type: ignore
 
 from env.config import ALGORITHM, SECRET_KEY
 from src.database import async_session_dependency
-from src.users.schemas import UserCreate, UserInDB, TokenData, UserRead
+from src.users.schemas import UserBooksCreate, UserCreate, UserInDB, TokenData, UserRead
 from src.users.models import UserModel, UsersBooksModel
 from src.library.models.book import BookModel
 from src.users.auth import get_password_hash, oauth2_scheme, verify_password
@@ -89,3 +89,39 @@ async def get_user_books(
         raise HTTPException(status_code=500, detail="Unexpected error occured.")
     else:
         return books
+    
+    
+async def post_a_book_to_the_current_users_library(
+    session: async_session_dependency, 
+    book_name: str,
+    username: str,
+    shelf_to_put: str
+):
+    # Fetch the book ID
+    stmt = select(BookModel.book_id).where(BookModel.book_name == book_name)
+    result = await session.execute(stmt)
+    book_id = result.scalars().first()
+
+    if not book_id:
+        raise HTTPException(status_code=404, detail=f"Book '{book_name}' not found")
+
+    # Fetch the user ID
+    stmt = select(UserModel.user_id).where(UserModel.username == username)
+    result = await session.execute(stmt)
+    user_id = result.scalars().first()
+
+    if not user_id:
+        raise HTTPException(status_code=404, detail=f"User '{username}' not found")
+
+    # Insert into the users_books table
+    stmt = insert(UsersBooksModel).values(
+        user_id=user_id,
+        book_id=book_id,
+        book_shelf=shelf_to_put
+    )
+    await session.execute(stmt)
+    await session.commit()
+
+    return {"user_id": user_id, "book_id": book_id, "book_shelf": shelf_to_put}
+
+

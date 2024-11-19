@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import Integer, String, ForeignKey, DATE
+from sqlalchemy import Integer, String, ForeignKey, DATE, Table, Column
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database import Base
@@ -16,9 +16,17 @@ class UserModel(Base):
     registration_date: Mapped[date] = mapped_column(DATE, default=date.today(), nullable=True)
 
 
-class UsersBooksModel(Base):
-    __tablename__ = "users-books"
+#class UsersBooksModel(Base):
+#    __tablename__ = "users_books"
+#    
+#    book_id: Mapped[int] = mapped_column(Integer, ForeignKey("books.book_id"), primary_key=True, nullable=False)
+#    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.user_id"), primary_key=True, nullable=False)
+#    book_shelf: Mapped[str] = mapped_column(String(30), nullable=True)
     
-    book_id: Mapped[int] = mapped_column(Integer, ForeignKey("books.book_id"), primary_key=True, nullable=False)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.user_id"), primary_key=True, nullable=False)
-
+UsersBooksModel = Table(
+    "users_books",
+    Base.metadata,
+    Column("book_id", ForeignKey("books.book_id"), primary_key=True, nullable=False),
+    Column("user_id", ForeignKey("users.user_id"), primary_key=True, nullable=False),
+    Column("book_shelf", nullable=True),
+)
