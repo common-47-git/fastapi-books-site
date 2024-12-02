@@ -5,7 +5,7 @@ from datetime import timedelta
 from typing import Annotated
 
 from src.users.auth import create_access_token
-from src.users.crud import authenticate_user, get_current_user, get_user_books, post_user, post_a_book_to_the_current_users_library
+from src.users.crud import authenticate_user, get_current_user, get_user_books, post_user, post_book_to_current_users_library
 from src.users.schemas import Token, UserRead, UserCreate
 from src.library.schemas import books
 from src.library import crud
@@ -61,14 +61,14 @@ async def read_user_books(
 
 
 @users_router.post("/bookmark")
-async def add_a_book_to_the_current_users_library(
+async def add_book_to_current_users_library(
     book_name: str,
     shelf: str,
     current_user: Annotated[UserRead, Depends(get_current_user)],
     session: async_session_dependency
 ):
     try:
-        book = await post_a_book_to_the_current_users_library(
+        book = await post_book_to_current_users_library(
             book_name=book_name, 
             username=current_user.username,
             shelf_to_put=shelf,

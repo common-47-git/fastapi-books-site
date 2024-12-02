@@ -1,0 +1,12 @@
+.default-dropdown-list {
+  text-align: center;
+  padding: 0.5em 0.9em;
+  border-radius: 4px;
+  background-color: rgba(157, 52, 52, 0.483);
+  letter-spacing: 0.05em;
+  color: rgb(162, 162, 163);
+  width: 200px; /* Control width of the dropdown */
+  margin: 10px auto; /* Center the dropdown */
+  width: 100%;
+  border: 0px;
+}/*# sourceMappingURL=styles.css.map */

@@ -10,6 +10,9 @@
   padding: 40px;
   border-right: 1px solid rgb(68, 70, 70);
 }
+.book-detail .book-nav .dropdown-add-list {
+  width: 100%;
+}
 .book-detail .book-nav .book-cover .book-cover-img {
   width: 250px;
   height: 340px;

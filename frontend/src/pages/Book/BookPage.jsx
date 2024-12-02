@@ -5,6 +5,7 @@ import { useParams, useSearchParams, Link } from "react-router-dom";
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import DefaultButton from '../../components/DefaultButton/DefaultButton';
+import DefaultDropdownList from '../../components/DefaultDropdownList/DefaultDropdownList';
 import './css/styles.css';
 
 function BookPage() {
@@ -13,6 +14,11 @@ function BookPage() {
   const [searchParams] = useSearchParams();
   const volume = searchParams.get('volume') || 1;
   const chapter = searchParams.get('chapter') || 1;
+
+  const [shelf, setShelf] = useState("reading"); // Default shelf selection
+  const [message, setMessage] = useState(null); // Status message for the operation
+
+  const listOfOptions = ['Reading', 'Completed', 'Wishlist']; // Options for dropdown
 
   // Fetch all book information (book, authors, tags)
   useEffect(() => {
@@ -27,6 +33,41 @@ function BookPage() {
 
     fetchBookInfo();
   }, [bookName]);
+
+  // Handle dropdown change and add book to the library
+  const handleShelfChange = async (event) => {
+    const newShelf = event.target.value;
+    setShelf(newShelf);  // Update shelf value
+
+    // Add book to the library when the shelf changes
+    await handleAddToLibrary(newShelf);
+  };
+
+  // Handle adding book to library
+  const handleAddToLibrary = async (shelfToPut) => {
+    const token = localStorage.getItem('accessToken'); // Retrieve the token
+
+    if (!token) {
+      setMessage("User is not authenticated. Please log in.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/users/bookmark?book_name=${bookName}&shelf=${shelfToPut}`,
+        null, // No data payload
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
+      setMessage("Book added successfully!");
+    } catch (error) {
+      console.error("API Error:", error.response?.data || error.message);
+      setMessage("Failed to add the book to your library.");
+    }    
+  };
 
   if (!bookInfo) {
     return <div>Loading...</div>;
@@ -56,6 +97,15 @@ function BookPage() {
               }}>
                 <DefaultButton content={"READ"} />
               </Link>
+
+              {/* Dropdown to add book to a shelf */}
+              <div className="dropdown-add-list" >
+                <DefaultDropdownList 
+                  listOfOptions={listOfOptions} 
+                  shelf={shelf} 
+                  handleShelfChange={handleShelfChange} 
+                />
+              </div>
             </div>
 
             <div className="book-detail-container">
@@ -66,6 +116,9 @@ function BookPage() {
               <div className="book-detail-row"><strong>Tags:</strong> {tagNames || "No tags available"}</div>
               <div className="book-detail-row"><strong>Description:</strong> {book.book_description || "No description available"}</div>
             </div>
+
+            {/* Status message */}
+            {message && <div className="status-message">{message}</div>}
           </div>
         </div>
       </main>
