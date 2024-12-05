@@ -89,7 +89,43 @@ async def get_user_books(
         raise HTTPException(status_code=500, detail="Unexpected error occured.")
     else:
         return books
+
+
+async def get_user_book_shelf(
+    session: async_session_dependency, 
+    username: str,
+    book_name: str
+):
+    try:
+        query = select(BookModel.book_id).where(BookModel.book_name == book_name)
+        book_id = await session.execute(query)
+        book_id = book_id.scalars().first()
+
+        query = select(UserModel.user_id).where(UserModel.username == username)
+        user_id = await session.execute(query)
+        user_id = user_id.scalars().first()
+
+        if not book_id:
+            raise HTTPException(status_code=404, detail="Book not found.")
+
+        query = (
+            select(UsersBooksModel.c.book_shelf)
+            .join(UserModel, UsersBooksModel.c.user_id == UserModel.user_id)
+            .where(UsersBooksModel.c.book_id == book_id, UserModel.user_id == user_id)
+        )
+        result = await session.execute(query)
+        shelf: str = result.scalars().first() 
+
+        if shelf is None:
+            return None 
+
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
     
+    return shelf.strip() if shelf else None 
+
     
 async def post_book_to_current_users_library(
     session: async_session_dependency, 

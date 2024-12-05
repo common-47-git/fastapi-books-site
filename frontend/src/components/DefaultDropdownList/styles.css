@@ -1,12 +1,56 @@
 .default-dropdown-list {
-  text-align: center;
-  padding: 0.5em 0.9em;
+  display: block;
+  padding: 8px 15px;
+  margin: 0;
   border-radius: 4px;
   background-color: rgba(157, 52, 52, 0.483);
   letter-spacing: 0.05em;
   color: rgb(162, 162, 163);
-  width: 200px; /* Control width of the dropdown */
-  margin: 10px auto; /* Center the dropdown */
   width: 100%;
-  border: 0px;
+  border: none;
+  font-size: 15px;
+  text-align: center;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  cursor: pointer;
+}
+
+.default-dropdown-list__option {
+  font-size: 15px;
+  background-color: rgb(90, 39, 39); /* Initial background color */
+  color: rgb(162, 162, 163); /* Option text color */
+  text-align: center;
+  padding: 10px; /* Adds some padding to the options */
+  border: none;
+  cursor: pointer;
+}
+
+/* Style for hover effect */
+.default-dropdown-list__option:hover {
+  background-color: rgba(157, 52, 52, 0.7); /* Darker background on hover */
+  cursor: pointer;
+}
+
+/* Ensures the custom styling works across browsers */
+.default-dropdown-list {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Update this in case of browser-specific default hover effects */
+.default-dropdown-list {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none; /* Removes the default blue border outline */
+}
+
+select.decorated option:hover {
+  box-shadow: 0 0 10px 100px #1882A8 inset;
+}
+
+option:hover {
+  background-color: green;
 }/*# sourceMappingURL=styles.css.map */

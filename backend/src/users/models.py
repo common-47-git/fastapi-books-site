@@ -28,5 +28,5 @@ UsersBooksModel = Table(
     Base.metadata,
     Column("book_id", ForeignKey("books.book_id"), primary_key=True, nullable=False),
     Column("user_id", ForeignKey("users.user_id"), primary_key=True, nullable=False),
-    Column("book_shelf", nullable=True),
+    Column("book_shelf", String(30), nullable=True),
 )

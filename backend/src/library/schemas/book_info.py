@@ -6,6 +6,7 @@ class BookInfoBase(BaseModel):
     book: books.BookRead
     book_tags: list[tags.TagRead]
     book_authors: list[authors.AuthorRead]
+    book_shelf: str | None
 
 
 class BookInfoCreate(BookInfoBase):

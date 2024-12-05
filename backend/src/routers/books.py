@@ -1,16 +1,22 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+
 
 from src.library.schemas import books, authors, book_info
-from src.library import crud
+from src.library import crud as library_crud
+from src.users.schemas import UserRead
+from src.users import crud as users_crud
 from src.database import async_session_dependency
+
+from typing import Annotated
 
 books_router = APIRouter(prefix="/books", tags=["books"])
 
 @books_router.get("/all", response_model=list[books.BookBase])
-async def read_books(session: async_session_dependency
-                     )-> list[books.BookBase]:
+async def read_books(
+    session: async_session_dependency
+)-> list[books.BookBase]:
     try:
-        books = await crud.get_books(session=session)
+        books = await library_crud.get_books(session=session)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
@@ -23,18 +29,46 @@ async def read_books(session: async_session_dependency
 @books_router.get("/{book_name}", response_model=book_info.BookInfoRead)
 async def read_book_by_name(
     book_name: str,
+    current_user: Annotated[UserRead, Depends(users_crud.get_current_user)],
     session: async_session_dependency
 ):
     try:
-        book = await crud.get_book_by_name(book_name=book_name, session=session)
-        book_tags = await crud.get_tags_by_book_name(book_name=book_name, session=session)
-        book_authors = await crud.get_authors_by_book_name(book_name=book_name, session=session)
-    except Exception:
-        raise HTTPException(status_code=500)
-    
-    if not book:
-        raise HTTPException(status_code=404)
-    return {"book": book, "book_tags": book_tags, "book_authors": book_authors}
+        # Fetch book details
+        book = await library_crud.get_book_by_name(book_name=book_name, session=session)
+        if not book:
+            raise HTTPException(status_code=404, detail="Book not found.")
+        
+        # Fetch associated tags and authors
+        book_tags = await library_crud.get_tags_by_book_name(book_name=book_name, session=session)
+        book_authors = await library_crud.get_authors_by_book_name(book_name=book_name, session=session)
+
+        # Fetch user-specific shelf info
+        try:
+            book_shelf = await users_crud.get_user_book_shelf(
+                book_name=book_name,
+                username=current_user.username,
+                session=session
+            )
+        except HTTPException as e:
+            if e.status_code == 401:  # Handle unauthorized user
+                book_shelf = None
+            else:
+                raise
+
+        # Return combined data
+        return {
+            "book": book,
+            "book_tags": book_tags,
+            "book_authors": book_authors,
+            "book_shelf": book_shelf
+        }
+
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected server error: {str(e)}")
+
+
 
 
 @books_router.get("/{book_name}/read")
@@ -45,7 +79,7 @@ async def read_book_chapter(
     chapter: int = 1,
 ):
     try:
-        chapter = await crud.get_book_chapter(
+        chapter = await library_crud.get_book_chapter(
             book_name=book_name, 
             volume_number=volume, 
             chapter_number=chapter,

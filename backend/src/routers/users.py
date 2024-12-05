@@ -5,7 +5,7 @@ from datetime import timedelta
 from typing import Annotated
 
 from src.users.auth import create_access_token
-from src.users.crud import authenticate_user, get_current_user, get_user_books, post_user, post_book_to_current_users_library
+from src.users.crud import authenticate_user, get_current_user, get_user_book_shelf, get_user_books, post_user, post_book_to_current_users_library
 from src.users.schemas import Token, UserRead, UserCreate
 from src.library.schemas import books
 from src.library import crud
@@ -79,3 +79,17 @@ async def add_book_to_current_users_library(
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
     return {"status": 200, "detail": "Book added to library", "data": book}
+
+
+@users_router.get("/{book_name}/dsdsd")
+async def dsdsdsds(
+    book_name: str,
+    current_user: Annotated[UserRead, Depends(get_current_user)],
+    session: async_session_dependency
+):
+    try:
+        book_self = await get_user_book_shelf(book_name=book_name, username=current_user.username, session=session)
+    except Exception:
+        raise HTTPException(status_code=500)
+    
+    return {"book_shelf": book_self}
