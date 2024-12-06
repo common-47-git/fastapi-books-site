@@ -29,46 +29,36 @@ async def read_books(
 @books_router.get("/{book_name}", response_model=book_info.BookInfoRead)
 async def read_book_by_name(
     book_name: str,
-    current_user: Annotated[UserRead, Depends(users_crud.get_current_user)],
-    session: async_session_dependency
+    session: async_session_dependency,
+    token: str | None = None,
 ):
     try:
-        # Fetch book details
+        
         book = await library_crud.get_book_by_name(book_name=book_name, session=session)
         if not book:
             raise HTTPException(status_code=404, detail="Book not found.")
         
-        # Fetch associated tags and authors
         book_tags = await library_crud.get_tags_by_book_name(book_name=book_name, session=session)
         book_authors = await library_crud.get_authors_by_book_name(book_name=book_name, session=session)
 
-        # Fetch user-specific shelf info
-        try:
+        if not token:
+            book_shelf = None
+        else:
+            current_user = await users_crud.get_current_user(token=token, session=session)
             book_shelf = await users_crud.get_user_book_shelf(
                 book_name=book_name,
                 username=current_user.username,
                 session=session
             )
-        except HTTPException as e:
-            if e.status_code == 401:  # Handle unauthorized user
-                book_shelf = None
-            else:
-                raise
 
-        # Return combined data
-        return {
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected server error: {str(e)}")
+    
+    return {
             "book": book,
             "book_tags": book_tags,
             "book_authors": book_authors,
-            "book_shelf": book_shelf
-        }
-
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Unexpected server error: {str(e)}")
-
-
+            "book_shelf": book_shelf}
 
 
 @books_router.get("/{book_name}/read")
