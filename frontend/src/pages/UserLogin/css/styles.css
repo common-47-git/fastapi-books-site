@@ -1,1 +1,45 @@
-/*# sourceMappingURL=styles.css.map */
+/* Login form styling */
+.login-form {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+  margin: 0 auto;
+  /* Label styling */
+}
+.login-form .login-input {
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  transition: border-color 0.3s ease;
+  width: 100%;
+}
+.login-form .login-input:focus {
+  outline: none;
+  border-color: #9d3434; /* Red border on focus */
+  box-shadow: 0 0 5px rgba(157, 52, 52, 0.5); /* Subtle red shadow */
+}
+.login-form .login-label {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #dddddd;
+  text-align: left;
+  display: block; /* Ensures labels are aligned properly */
+}
+.login-form .login-btn {
+  width: 100%;
+  text-align: center;
+  border-radius: 4px;
+  background-color: rgba(157, 52, 52, 0.483);
+  letter-spacing: 0.05em;
+  color: rgb(162, 162, 163);
+  padding: 8px 16px; /* Ensure consistent padding */
+  display: inline-block; /* Prevent unintended resizing */
+  border: 2px solid transparent; /* Prevent border shift */
+  font-size: 14px; /* Consistent font size */
+}
+.login-form .login-btn:hover {
+  background-color: rgba(157, 52, 52, 0.7);
+  border: 2px solid rgba(157, 52, 52, 0.7); /* Keep border size the same */
+  color: rgb(255, 255, 255);
+}/*# sourceMappingURL=styles.css.map */

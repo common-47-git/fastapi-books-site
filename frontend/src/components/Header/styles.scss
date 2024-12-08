@@ -1,33 +1,71 @@
-
 .header {
-
     border-bottom: 1px solid rgba(157, 52, 52, 0.483);
-
-    .header-nav{
-
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 40px;
-
-        .header-nav-el {
-            color: #ccc;
-            
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgb(157, 52, 52);
-            gap: 5px;
-
-            .header-nav-icon {
-                width: 15px;
-            }
-
-            &:hover {
-                transition: 0.1s;
-                transform: scale(1.1);
-            }
-        }
+    height: 3rem;
+    display: flex;
+    justify-content: space-between; /* Spread left and right content */
+    align-items: center; /* Vertically align items in the header */
+    padding: 0 1rem; /* Add padding to the left and right sides for spacing */
+  
+    .header-container {
+      display: flex;
+      width: 100%;
+      justify-content: space-around; /* Ensure the nav items are spaced correctly */
+      
     }
-}
+  
+    .header-nav-left, .header-nav-right {
+      display: flex;
+      align-items: center;
+    }
+  
+    .header-nav-left {
+      gap: 2rem; /* Spacing between "Main" and "Books" links */
+    }
+  
+    .header-nav-right {
+      gap: 1rem; /* Smaller gap between "Me" and "Login" button */
+    }
+
+    .header-nav-el--user{
+      color: rgb(157, 52, 52);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+      .header-nav-icon {
+        width: 1.7rem;
+        height: 1.7rem;
+      }
+  
+      &:hover {
+        transition: all 0.3s ease;
+        opacity: 0.9;
+        color: rgba(157, 52, 52, 0.8);
+      }
+    }
+  
+    .header-nav-el {
+      color: rgb(157, 52, 52);
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      padding: 0.5rem;
+  
+      .header-nav-icon {
+        width: 1.2rem;
+        height: 1.2rem;
+      }
+  
+      &:hover {
+        transition: all 0.3s ease;
+        opacity: 0.9;
+        color: rgba(157, 52, 52, 0.8);
+      }
+    }
+  }
+  

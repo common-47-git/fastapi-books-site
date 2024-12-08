@@ -37,17 +37,25 @@ function HeaderComponent() {
 
   return (
     <header className="header">
-      <nav className="header-nav">
-        <Link to={`/`} className="header-nav-el"> Main </Link>
-        <Link to={`/books`} className="header-nav-el">
-          <img src="../../public/book-open-cover.png" alt="icon" className="header-nav-icon" content="Books"/> Books
-        </Link>
-        {username ? ( // Conditionally render based on username
-          <Link to={`/users?username=${username}`} className="header-nav-el"> Me </Link>
-        ) : (
-          <Link to={`/users/login`} className="header-nav-el"> <DefaultButton content={"Login"} /> </Link>
-        )}
-      </nav>
+      <div className="header-container">
+        <div className="header-nav-left">
+          <Link to={`/`} className="header-nav-el">
+            <img src="../../public/main-icon.png" alt="icon" className="header-nav-icon" />
+              Main 
+          </Link>
+          <Link to={`/books`} className="header-nav-el">
+            <img src="../../public/book-open-cover.png" alt="icon" className="header-nav-icon" />
+              Books
+          </Link>
+        </div>
+        <div className="header-nav-right">
+          {username ? ( // Conditionally render based on username
+            <Link to={`/users?username=${username}`} className="header-nav-el--user"> <img src="../../public/profile-user.png" alt="icon" className="header-nav-icon" /> </Link>
+          ) : (
+            <Link to={`/users/login`} className="header-nav-el"> <DefaultButton content={"Login"} /> </Link>
+          )}
+        </div>
+      </div>
     </header>
   );
 }

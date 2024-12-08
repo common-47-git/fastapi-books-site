@@ -1,9 +1,18 @@
-
 .default-btn {
+    width: 100%;
     text-align: center;
-    padding: 8px 15px;
     border-radius: 4px;
     background-color: rgba(157, 52, 52, 0.483);
     letter-spacing: 0.05em;
     color: rgb(162, 162, 163);
-}   
+    padding: 8px 16px; /* Ensure consistent padding */
+    display: inline-block; /* Prevent unintended resizing */
+    border: 2px solid transparent; /* Prevent border shift */
+    font-size: 14px; /* Consistent font size */
+}
+
+.default-btn:hover {
+    background-color: rgba(157, 52, 52, 0.7);
+    border: 2px solid rgba(157, 52, 52, 0.7); /* Keep border size the same */
+    color: rgb(255, 255, 255);
+}

@@ -35,31 +35,35 @@ function UserLogin() {
   return (
     <>
       <Header />
-      <main className="main">
-        <form onSubmit={handleSubmit}>
-          <label>
-            Username:
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </label>
-          <br />
-          <label>
-            Password:
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </label>
-          <br />
-          <button type="submit">Login</button>
-        </form>
-      </main>
+        <main className="main">
+          <div className="container">
+            <form onSubmit={handleSubmit} className="login-form">
+              <label className="login-label" >
+                Username:
+                <input
+                  className="login-input"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                />
+              </label>
+              <br />
+              <label className="login-label" >
+                Password:
+                <input
+                  className="login-input"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </label>
+              <br />
+              <button className="login-btn" type="submit">Login</button>
+            </form>
+          </div>
+        </main>
       <Footer />
     </>
   );

@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import BookPreview from './components/BookPreview';
-import './css/styles.css'
+import './css/styles.css';
 
 function BooksPage() {
   const [books, setBooks] = useState([]);
@@ -23,7 +22,7 @@ function BooksPage() {
 
   useEffect(() => {
     fetchBooks();
-  }, []);
+  }, []); // Fetch books once when the component is mounted
 
   return (
     <> 
@@ -31,18 +30,18 @@ function BooksPage() {
       <main className="main">
         <div className="container">
           <div className="books-grid">
-            {books.length > 0 ? 
+            {books.length > 0 ?
               books.map((book, index) => (
                 <Link to={`/books/${book.book_name}`} key={index} className="book-container">
-                  <BookPreview book={book}></BookPreview>
+                  <BookPreview book={book} />
                 </Link>
-              )) 
-              : "Loading..."
+              ))
+              : <p>Loading...</p>
             }
           </div>
         </div>
       </main>
-      <Footer></Footer>
+      <Footer />
     </>
   );
 }
