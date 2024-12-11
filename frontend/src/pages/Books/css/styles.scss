@@ -3,9 +3,9 @@
 
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-evenly;
 
     .book-container {
-        padding: 5px;
         position: relative;
         
         .book-cover {

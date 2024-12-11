@@ -5,35 +5,37 @@ import './styles.css';
 
 function HeaderComponent() {
   const [username, setUsername] = useState(null);
+  const [loading, setLoading] = useState(true); // Add a loading state
 
   useEffect(() => {
     const fetchUsername = async () => {
-      const token = localStorage.getItem("accessToken"); // Get the access token
+      const token = localStorage.getItem("accessToken");
       if (token) {
         try {
           const response = await fetch("http://127.0.0.1:8000/users/me", {
             method: "GET",
             headers: {
-              "Authorization": `Bearer ${token}`, // Include the token in the header
+              "Authorization": `Bearer ${token}`,
             },
           });
 
           if (response.ok) {
             const data = await response.json();
-            setUsername(data.username); // Set the username from the response
+            setUsername(data.username);
           } else {
             console.error("Failed to fetch user data");
-            setUsername(null); // Reset username on error
+            setUsername(null);
           }
         } catch (error) {
           console.error("Error fetching user data:", error);
-          setUsername(null); // Reset username on error
+          setUsername(null);
         }
       }
+      setLoading(false); // Set loading to false after fetch
     };
 
     fetchUsername();
-  }, []); // Fetch username on component mount
+  }, []);
 
   return (
     <header className="header">
@@ -41,18 +43,24 @@ function HeaderComponent() {
         <div className="header-nav-left">
           <Link to={`/`} className="header-nav-el">
             <img src="../../public/main-icon.png" alt="icon" className="header-nav-icon" />
-              Main 
+            Main
           </Link>
           <Link to={`/books`} className="header-nav-el">
             <img src="../../public/book-open-cover.png" alt="icon" className="header-nav-icon" />
-              Books
+            Books
           </Link>
         </div>
         <div className="header-nav-right">
-          {username ? ( // Conditionally render based on username
-            <Link to={`/users?username=${username}`} className="header-nav-el--user"> <img src="../../public/profile-user.png" alt="icon" className="header-nav-icon" /> </Link>
-          ) : (
-            <Link to={`/users/login`} className="header-nav-el"> <DefaultButton content={"Login"} /> </Link>
+          {loading ? (
+              <div className="spinner"></div> // Placeholder loader
+            ) : username ? (
+              <Link to={`/users?username=${username}`} className="header-nav-el--user">
+                <img src="../../public/profile-user.png" alt="icon" className="header-nav-icon" />
+              </Link>
+            ) : (
+              <Link to={`/users/login`} className="header-nav-el">
+                <DefaultButton content={"Login"} />
+              </Link>
           )}
         </div>
       </div>

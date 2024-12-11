@@ -27,12 +27,7 @@ function BookPage() {
   
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/books/${bookName}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include authorization header
-            },
-          }
+          `http://127.0.0.1:8000/books/${bookName}?token=${token}`
         );
         setBookInfo(response.data);
   
@@ -125,7 +120,7 @@ function BookPage() {
               <div className="book-detail-row"><strong>Country:</strong> {book.book_country}</div>
               <div className="book-detail-row"><strong>Release Date:</strong> {new Date(book.book_release_date).toLocaleDateString()}</div>
               <div className="book-detail-row"><strong>Tags:</strong> {tagNames || "No tags available"}</div>
-              <div className="book-detail-row"><strong>Description:</strong> {book.book_description || "No description available"}</div>
+              <div className="book-detail-row"> {book.book_description || "No description available"}</div>
             </div>
 
             {message && <div className="status-message">{message}</div>}

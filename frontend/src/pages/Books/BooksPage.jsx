@@ -4,7 +4,7 @@ import axios from "axios";
 
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
-import BookPreview from './components/BookPreview';
+import BookPreview from '../../components/BookPreview/BookPreview';
 import './css/styles.css';
 
 function BooksPage() {

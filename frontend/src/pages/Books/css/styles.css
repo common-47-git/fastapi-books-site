@@ -1,9 +1,9 @@
 .books-grid {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-evenly;
 }
 .books-grid .book-container {
-  padding: 5px;
   position: relative;
 }
 .books-grid .book-container .book-cover .book-cover-img {

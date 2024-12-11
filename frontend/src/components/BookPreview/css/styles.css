@@ -1,19 +1,12 @@
-.books-grid {
-  display: flex;
-  flex-wrap: wrap;
+.book-cover .book-cover-img {
+  width: 220px;
+  height: 340px;
 }
-.books-grid .book-container {
-  padding: 5px;
-  position: relative;
-}
-.books-grid .book-container .book-cover .book-cover-img {
-  width: 200px;
-  height: 300px;
-}
-.books-grid .book-container .book-cover :hover {
+.book-cover :hover {
   box-shadow: 5px 5px 5px rgba(202, 202, 202, 0.124);
 }
-.books-grid .book-container .book-title {
+
+.book-title {
   padding: 1px;
   position: absolute;
   bottom: 15px;

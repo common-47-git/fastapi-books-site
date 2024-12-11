@@ -4,6 +4,8 @@ import Footer from '../../components/Footer/Footer';
 import Header from '../../components/Header/Header';
 import BookPreview from '../../components/BookPreview/BookPreview'; 
 
+import './css/styles.css';
+
 function UserPage() {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
@@ -66,19 +68,16 @@ function UserPage() {
       <main className="main">
         <div className="container">
           {error ? (
-            <p style={{ color: 'red' }}>{error}</p>
+            <p className="loading-text" style={{ color: 'red' }}>{error}</p>
           ) : userData ? (
-            <div>
-              <h2>User Info</h2>
-              <p><strong>Username:</strong> {userData.username}</p>
+            <div className="user-info">
+              <p>{userData.username}</p>
               <p><strong>Email:</strong> {userData.email}</p>
               <p><strong>Registration Date:</strong> {userData.registration_date || 'N/A'}</p>
             </div>
           ) : (
-            <p>Loading user data...</p>
+            <p className="loading-text">Loading user data...</p>
           )}
-          <hr/>
-          <h2>Your Books</h2>
           <div className="books-grid">
             {books.length > 0 ? 
               books.map((book, index) => (
@@ -86,7 +85,7 @@ function UserPage() {
                   <BookPreview book={book} />
                 </Link>
               )) 
-              : "Loading books..."
+              : <p className="loading-text">Loading books...</p>
             }
           </div>
         </div>

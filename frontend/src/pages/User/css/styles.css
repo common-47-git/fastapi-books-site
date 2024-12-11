@@ -1,0 +1,29 @@
+/* User Info Section */
+.user-info {
+  margin: 30px 0 30px;
+  border: 1px solid rgba(157, 52, 52, 0.483); /* Highlighted red color */
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.user-info h2 {
+  color: #9d3434; /* Highlighted red color */
+  margin-bottom: 1rem;
+}
+
+.user-info p {
+  margin: 0.5rem 0;
+  font-size: 1.4rem;
+}
+
+.user-info p strong {
+  color: #555; /* Dark gray for labels */
+}
+
+/* Loading text */
+.loading-text {
+  text-align: center;
+  color: #9d3434;
+  font-size: 1.2rem;
+}/*# sourceMappingURL=styles.css.map */
