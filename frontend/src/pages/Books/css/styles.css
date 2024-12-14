@@ -1,7 +1,7 @@
 .books-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 .books-grid .book-container {
   position: relative;

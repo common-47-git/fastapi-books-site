@@ -33,7 +33,7 @@ function HomePage() {
       <main className="main">
         <div className="container">
           <div className="books-recently">
-            <h2>Recently Added Books</h2>
+            <h2 className="books-recently__h" >Recently Added Books</h2>
             <div className="books-grid">
               {books.length > 0 ? 
                 books.map((book, index) => (

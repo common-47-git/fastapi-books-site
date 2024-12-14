@@ -1,4 +1,13 @@
 .books-recently {
-  border: 1px solid rgba(157, 52, 52, 0.483);
-  padding: 20px;
+  margin: 30px 0 30px;
+  border: 1px solid rgba(157, 52, 52, 0.483); /* Highlighted red color */
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+.books-recently .books-recently__h {
+  color: #9d3434; /* Highlighted red color */
+  margin-bottom: 1rem;
+  font-weight: bold;
+  font-size: 1.4rem;
 }/*# sourceMappingURL=styles.css.map */
